@@ -483,41 +483,59 @@
 
   <!-- HUMAN CV EXPERT DASHBOARD PANEL -->
   <div id="expertDashboard" class="container dashboard-panel">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:2px solid var(--border); padding-bottom:12px;">
       <div>
-        <h2>Human CV Expert Portal</h2>
-        <p style="color:var(--text-muted); font-size:14px;">Review applicant submissions, manage files, and send optimized CVs.</p>
+        <h2 style="font-size:22px; color:var(--text);">Human CV Expert Management Dashboard</h2>
+        <p style="color:var(--text-muted); font-size:14px;">Review applicant submissions and reply directly with revised CV documents.</p>
       </div>
-      <span class="badge badge-expert" style="padding:6px 12px; font-size:12px;">Secured Expert Mode</span>
+      <span class="badge badge-expert" style="padding:8px 14px; font-size:12px; border-radius:20px;">🛡️ Secured Expert Mode</span>
     </div>
 
-    <div class="panel-grid">
-      <div style="background:#fff; border:1px solid var(--border); padding:18px; border-radius:8px;">
-        <h3 style="margin-bottom:12px; font-size:16px;">Send Optimized Document to User</h3>
-        <form id="expertUploadForm">
-          <div class="form-group">
-            <label>Select Recipient User:</label>
-            <select id="expertUserSelect" required></select>
-          </div>
+    <!-- Main Section: Received Requests -->
+    <div style="background:#fff; border:1px solid var(--border); padding:20px; border-radius:12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <h3 style="font-size:17px; font-weight:700;">Incoming User Submissions</h3>
+        <span id="submissionCounter" style="background:#eff6ff; color:var(--primary); font-size:12px; font-weight:700; padding:4px 10px; border-radius:12px;">0 Pending</span>
+      </div>
+      <ul class="doc-list" id="expertDocList"></ul>
+    </div>
+  </div>
 
-          <div class="form-group">
-            <label>Document Title / Remarks:</label>
-            <input type="text" id="expertDocTitle" placeholder="e.g., Final Optimized Resume - Qatar Airways" required />
-          </div>
-
-          <div class="form-group">
-            <label>Attach Document:</label>
-            <input type="file" id="expertFile" required />
-          </div>
-
-          <button type="submit" class="btn btn-expert" style="width:100%;">Upload & Send to User</button>
-        </form>
+  <!-- Dedicated Reply Modal for Expert -->
+  <div id="expertReplyModal" class="modal">
+    <div class="modal-content" style="max-width:500px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid var(--border); padding-bottom:10px;">
+        <h3 style="margin:0; font-size:18px; color:var(--text);">Reply to Applicant</h3>
+        <button onclick="closeModal('expertReplyModal')" style="background:none; border:none; font-size:20px; cursor:pointer; color:var(--text-muted);">&times;</button>
       </div>
 
-      <div style="background:#fff; border:1px solid var(--border); padding:18px; border-radius:8px;">
-        <h3 style="margin-bottom:12px; font-size:16px;">Received Submissions & Portal Data</h3>
-        <ul class="doc-list" id="expertDocList"></ul>
-      </div>
+      <form id="expertReplyForm" onsubmit="sendDocumentToUser(event)">
+        <div class="form-group">
+          <label>Recipient Applicant:</label>
+          <input type="text" id="expertReplyUserDisplay" readonly style="background:#f1f5f9; cursor:not-allowed; font-weight:600;" />
+          <input type="hidden" id="expertReplyUserEmail" />
+        </div>
+
+        <div class="form-group">
+          <label>Target Job / Document Title:</label>
+          <input type="text" id="expertReplyDocTitle" placeholder="e.g., Reviewed & Optimized Resume - Pilot Application" required />
+        </div>
+
+        <div class="form-group">
+          <label>Attach Revised CV / Document:</label>
+          <input type="file" id="expertReplyFile" required />
+        </div>
+
+        <div class="form-group">
+          <label>Expert Notes / Message to User:</label>
+          <textarea id="expertReplyNotes" rows="3" placeholder="Add custom guidance or breakdown of improvements made..." style="resize:none;"></textarea>
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:20px;">
+          <button type="submit" class="btn btn-expert" style="flex:2; justify-content:center;">📤 Upload & Send CV</button>
+          <button type="button" class="btn btn-outline" style="flex:1; justify-content:center;" onclick="closeModal('expertReplyModal')">Cancel</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -788,14 +806,26 @@
       reader.readAsDataURL(file);
     }
 
+    // Opens the dedicated reply modal pre-filled with the user's details
+    function openReplyModal(email, name, jobTitle) {
+      document.getElementById('expertReplyUserEmail').value = email;
+      document.getElementById('expertReplyUserDisplay').value = `${name} (${email})`;
+      document.getElementById('expertReplyDocTitle').value = `Optimized CV - ${jobTitle}`;
+      document.getElementById('expertReplyNotes').value = '';
+      document.getElementById('expertReplyFile').value = '';
+      document.getElementById('expertReplyModal').style.display = 'flex';
+    }
+
+    // Submits the reply document to Firestore
     function sendDocumentToUser(e) {
       e.preventDefault();
-      const recipientEmail = document.getElementById('expertUserSelect').value;
-      const docTitle = document.getElementById('expertDocTitle').value;
-      const fileInput = document.getElementById('expertFile');
+      const recipientEmail = document.getElementById('expertReplyUserEmail').value;
+      const docTitle = document.getElementById('expertReplyDocTitle').value;
+      const expertNotes = document.getElementById('expertReplyNotes').value || 'Optimized by Human CV Expert';
+      const fileInput = document.getElementById('expertReplyFile');
 
       if (!recipientEmail || !fileInput.files.length) {
-        alert('Please select a recipient and attach a document.');
+        alert('Please attach a document file.');
         return;
       }
 
@@ -809,15 +839,15 @@
           senderName: EXPERT_CREDENTIALS.name,
           recipientEmail: recipientEmail,
           jobTitle: docTitle,
-          notes: 'Optimized by Human CV Expert',
+          notes: expertNotes,
           fileName: file.name,
           fileData: event.target.result,
           timestamp: new Date().toLocaleString(),
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         })
         .then(() => {
-          alert('Document successfully sent to user!');
-          document.getElementById('expertUploadForm').reset();
+          alert(`Successfully delivered optimized CV to ${recipientEmail}!`);
+          closeModal('expertReplyModal');
           triggerAlertSoundAndVibration();
         })
         .catch(error => alert('Error sending document: ' + error.message));
@@ -874,6 +904,7 @@
         });
     }
 
+    // Listens to Firestore document updates and renders cards with direct action buttons
     function listenExpertDocs() {
       const container = document.getElementById('expertDocList');
 
@@ -884,8 +915,9 @@
           let incomingCount = 0;
 
           if (snapshot.empty) {
-            container.innerHTML = '<li style="color:var(--text-muted); font-size:13px;">No user submissions found.</li>';
+            container.innerHTML = '<li style="color:var(--text-muted); font-size:13px; text-align:center; padding:20px;">No user submissions found.</li>';
             document.getElementById('bellCount').textContent = '0';
+            document.getElementById('submissionCounter').textContent = '0 Pending';
             return;
           }
 
@@ -897,39 +929,38 @@
 
             const li = document.createElement('li');
             li.className = 'doc-item';
+            li.style.cssText = "display:flex; flex-direction:column; gap:10px; background:#fff; border:1px solid var(--border); padding:16px; border-radius:10px; margin-bottom:12px; box-shadow: 0 1px 4px rgba(0,0,0,0.03);";
+            
             li.innerHTML = `
-              <div>
-                <span class="badge ${isFromUser ? 'badge-user' : 'badge-expert'}">${isFromUser ? 'User Submission' : 'Sent by Expert'}</span>
-                <div style="font-weight:bold; font-size:14px; margin-top:2px;">${doc.jobTitle}</div>
-                <div style="font-size:12px; color:#334155;"><strong>Applicant:</strong> ${doc.senderName} (${doc.senderEmail})</div>
-                ${doc.paymentRef ? `<div style="font-size:12px; color:#065f46; background:#ecfdf5; padding:2px 6px; border-radius:4px; display:inline-block; margin:2px 0;"><strong>M-Pesa Ref:</strong> ${doc.paymentRef}</div>` : ''}
-                <div style="font-size:12px; color:#475569; margin:4px 0;"><strong>Details:</strong> ${doc.notes}</div>
-                <div style="font-size:11px; color:var(--text-muted);">${doc.fileName} • ${doc.timestamp}</div>
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; width:100%;">
+                <div>
+                  <span class="badge ${isFromUser ? 'badge-user' : 'badge-expert'}" style="font-size:11px;">
+                    ${isFromUser ? '📥 USER SUBMISSION' : '📤 REPLIED BY EXPERT'}
+                  </span>
+                  <div style="font-weight:800; font-size:16px; margin-top:4px; color:var(--text);">${doc.jobTitle}</div>
+                </div>
+                <span style="font-size:11px; color:var(--text-muted); background:#f1f5f9; padding:3px 8px; border-radius:4px;">${doc.timestamp}</span>
               </div>
-              <div style="display:flex; flex-direction:column; gap:5px;">
-                <a href="${doc.fileData}" download="${doc.fileName}" class="btn btn-outline" style="font-size:11px; padding:4px 8px;">Download</a>
-                <button class="btn btn-danger" style="font-size:11px; padding:4px 8px;" onclick="deleteDocumentFromFirestore('${docId}')">Delete</button>
+
+              <div style="background:#f8fafc; padding:10px; border-radius:6px; font-size:13px; line-height:1.5;">
+                <div><strong>Applicant:</strong> ${doc.senderName || 'Anonymous'} (<a href="mailto:${doc.senderEmail}" style="color:var(--primary);">${doc.senderEmail}</a>)</div>
+                ${doc.paymentRef ? `<div style="margin-top:4px;"><strong style="color:#065f46;">M-Pesa Ref:</strong> <span style="background:#ecfdf5; color:#047857; padding:2px 6px; border-radius:4px; font-weight:700;">${doc.paymentRef}</span></div>` : ''}
+                <div style="margin-top:4px; color:#475569;"><strong>Notes/Instructions:</strong> ${doc.notes || 'N/A'}</div>
+                <div style="margin-top:4px; font-size:12px; color:var(--text-muted);"><strong>File:</strong> ${doc.fileName}</div>
+              </div>
+
+              <div style="display:flex; gap:8px; justify-content:flex-end; width:100%; border-top:1px solid #f1f5f9; padding-top:10px;">
+                <a href="${doc.fileData}" download="${doc.fileName}" class="btn btn-outline" style="font-size:12px; padding:6px 12px;">📥 Download Original</a>
+                ${isFromUser ? `<button class="btn btn-primary" style="font-size:12px; padding:6px 12px;" onclick="openReplyModal('${doc.senderEmail}', '${doc.senderName || 'Applicant'}', '${doc.jobTitle.replace(/'/g, "\\'")}')">💬 Reply / Upload CV</button>` : ''}
+                <button class="btn btn-danger" style="font-size:12px; padding:6px 12px;" onclick="deleteDocumentFromFirestore('${docId}')">🗑️ Delete</button>
               </div>
             `;
             container.appendChild(li);
           });
 
           document.getElementById('bellCount').textContent = incomingCount;
-          populateExpertUserDropdown();
+          document.getElementById('submissionCounter').textContent = `${incomingCount} User Request(s)`;
         });
-    }
-
-    function populateExpertUserDropdown() {
-      const users = getUsers();
-      const select = document.getElementById('expertUserSelect');
-      select.innerHTML = '<option value="">-- Select Recipient User --</option>';
-
-      users.forEach(u => {
-        const opt = document.createElement('option');
-        opt.value = u.email;
-        opt.textContent = `${u.name} (${u.email})`;
-        select.appendChild(opt);
-      });
     }
 
     function initApp() {
@@ -953,9 +984,6 @@
         }
       }
     }
-
-    // Attach submit listener to Expert Form
-    document.getElementById('expertUploadForm').addEventListener('submit', sendDocumentToUser);
 
     // Initialize application
     initApp();
