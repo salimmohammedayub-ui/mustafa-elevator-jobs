@@ -3,715 +3,970 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Global Careers & Document Portal</title>
+  <title>MUSTAFA ELEVATE | Worldwide Careers & Human CV Experts</title>
   <style>
     :root {
       --primary: #2563eb;
-      --primary-hover: #1d4ed8;
+      --primary-dark: #1d4ed8;
+      --accent: #f59e0b;
       --bg: #f8fafc;
-      --card: #ffffff;
+      --card-bg: #ffffff;
       --text: #0f172a;
+      --text-muted: #64748b;
       --border: #e2e8f0;
       --danger: #ef4444;
       --success: #10b981;
     }
-    body {
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
       background-color: var(--bg);
       color: var(--text);
-      margin: 0;
-      padding: 20px;
+      padding-bottom: 40px;
     }
+
     .container {
-      max-width: 1050px;
+      max-width: 1100px;
       margin: 0 auto;
+      padding: 0 15px;
     }
+
+    /* Top Navigation Header */
     header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .nav-wrapper {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: var(--card);
-      padding: 15px 20px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      margin-bottom: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
     }
-    .auth-box {
-      max-width: 400px;
-      margin: 60px auto;
-      background: var(--card);
-      padding: 25px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+
+    .brand-logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .auth-tabs {
+
+    .nav-buttons {
       display: flex;
       gap: 10px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid var(--border);
+      align-items: center;
     }
-    .auth-tab {
+
+    .btn {
       padding: 8px 16px;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
+      border-radius: 6px;
+      border: none;
       font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
     }
-    .auth-tab.active {
-      border-color: var(--primary);
-      color: var(--primary);
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+    .btn-outline:hover { background: #eff6ff; }
+    .btn-expert { background: #0f172a; color: white; }
+    .btn-expert:hover { background: #334155; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-danger:hover { background: #dc2626; }
+
+    /* Notification Bell */
+    .notification-bell {
+      position: relative;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
+
+    .bell-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--danger);
+      color: white;
+      font-size: 10px;
+      font-weight: bold;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 15px;
+
+    /* Hero Banner */
+    .hero {
+      text-align: center;
+      padding: 35px 20px 25px;
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: white;
+      border-radius: 0 0 16px 16px;
       margin-bottom: 25px;
     }
-    @media (max-width: 768px) {
-      .grid { grid-template-columns: 1fr; }
+
+    .hero h1 { font-size: 30px; margin-bottom: 8px; }
+    .hero p { opacity: 0.9; font-size: 15px; max-width: 650px; margin: 0 auto; }
+
+    /* Job Dashboard Grid */
+    .section-title {
+      font-size: 20px;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .card {
-      background: var(--card);
-      padding: 20px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
+
+    .job-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 18px;
+      margin-bottom: 35px;
     }
-    .card h2 {
-      margin-top: 0;
-      font-size: 18px;
-      border-bottom: 2px solid var(--bg);
-      padding-bottom: 10px;
-    }
+
     .job-card {
-      background: var(--card);
+      background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 15px;
+      border-radius: 10px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
+
     .job-header {
       display: flex;
-      align-items: center;
       gap: 12px;
-      margin-bottom: 10px;
+      align-items: center;
+      margin-bottom: 12px;
     }
-    .job-logo {
+
+    .job-icon {
       width: 48px;
       height: 48px;
-      object-fit: contain;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      padding: 2px;
-      background: #fff;
+      background: #eff6ff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
     }
-    .job-title {
-      font-weight: bold;
-      font-size: 16px;
-    }
+
+    .job-title { font-weight: 700; font-size: 16px; }
+    .job-region { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+    .job-desc { font-size: 13px; color: #475569; margin-bottom: 15px; line-height: 1.4; }
+
     .job-actions {
       display: flex;
       gap: 8px;
-      margin-top: 12px;
     }
+
     .job-actions a, .job-actions button {
       flex: 1;
       text-align: center;
       font-size: 12px;
-      padding: 8px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 600;
+      padding: 9px;
     }
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--primary);
-      color: var(--primary);
-    }
-    .btn-outline:hover {
-      background: #eff6ff;
-    }
-    .form-group {
-      margin-bottom: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-    select, input, textarea, button {
-      padding: 10px 12px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      font-size: 14px;
-    }
-    button {
-      background: var(--primary);
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    button:hover {
-      background: var(--primary-hover);
-    }
-    button.btn-danger { background: var(--danger); }
-    .doc-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .doc-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      margin-bottom: 10px;
-      background: #fafafa;
-    }
-    .doc-info {
-      display: flex;
-      flex-direction: column;
-    }
-    .doc-meta {
-      font-size: 11px;
-      color: #64748b;
-    }
-    .badge {
-      display: inline-block;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 10px;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-    .badge-user { background: #dbeafe; color: #1e40af; }
-    .badge-staff { background: #dcfce7; color: #166534; }
-    
-    /* Modal styles */
+
+    /* Auth Modals & Panels */
     .modal {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 23, 42, 0.5);
+      background: rgba(15, 23, 42, 0.6);
       align-items: center;
       justify-content: center;
       z-index: 1000;
+      padding: 15px;
     }
+
     .modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 500px;
-      width: 90%;
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 450px;
+      width: 100%;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
+
+    .form-group {
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    label { font-size: 13px; font-weight: 600; color: #334155; }
+    input, select, textarea {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+      width: 100%;
+    }
+
+    /* Dashboard Layouts */
+    .dashboard-panel {
+      display: none;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media(max-width: 768px) {
+      .panel-grid { grid-template-columns: 1fr; }
+    }
+
+    .doc-list {
+      list-style: none;
+      margin-top: 10px;
+    }
+
+    .doc-item {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: #f8fafc;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .badge-user { background: #dbeafe; color: #1e40af; }
+    .badge-expert { background: #fef3c7; color: #92400e; }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <!-- Auth Screen -->
-  <div id="authContainer" class="auth-box">
-    <div class="auth-tabs">
-      <div id="tabLogin" class="auth-tab active" onclick="toggleAuthTab('login')">Login</div>
-      <div id="tabRegister" class="auth-tab" onclick="toggleAuthTab('register')">Register</div>
+  <!-- Top Navigation Header -->
+  <header>
+    <div class="nav-wrapper">
+      <div class="brand-logo" onclick="showPublicDashboard()" style="cursor:pointer;">
+        <span>MUSTAFA ELEVATE</span>
+      </div>
+
+      <!-- Header Action Buttons -->
+      <div class="nav-buttons" id="navPublicButtons">
+        <button class="btn btn-outline" onclick="openAuthModal('userLogin')">User Login / Register</button>
+        <button class="btn btn-expert" onclick="openAuthModal('expertLogin')">Human CV Expert</button>
+      </div>
+
+      <!-- Active Logged In Bar -->
+      <div class="nav-buttons" id="navActiveUser" style="display: none;">
+        <div class="notification-bell" onclick="triggerNotificationTest()" title="Click to test Sound & Vibration">
+          🔔 <span class="bell-badge" id="bellCount">0</span>
+        </div>
+        <span id="activeUserName" style="font-weight:600; font-size:14px;"></span>
+        <button class="btn btn-danger" onclick="handleLogout()">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Public Home & Job Dashboard (Default Page View) -->
+  <div id="publicView" class="container">
+    <div class="hero">
+      <h1>WELCOME TO MUSTAFA ELEVATE</h1>
+      <p>Your portal to worldwide verified careers & expert Human CV customization. Browse global opportunities below or request professional resume assistance.</p>
     </div>
 
-    <!-- Login Form -->
-    <form id="loginForm" onsubmit="handleLogin(event)">
-      <div class="form-group">
-        <label for="loginEmail">Email Address</label>
-        <input type="email" id="loginEmail" required placeholder="user@example.com" />
-      </div>
-      <div class="form-group">
-        <label for="loginPassword">Password</label>
-        <input type="password" id="loginPassword" required placeholder="••••••••" />
-      </div>
-      <button type="submit" style="width: 100%;">Sign In</button>
-    </form>
+    <div class="section-title">
+      <h2>Worldwide Careers Dashboard</h2>
+      <span style="font-size:13px; color:var(--text-muted);">Updated Verified Links</span>
+    </div>
 
-    <!-- Register Form (Only User accounts allowed) -->
-    <form id="registerForm" onsubmit="handleRegister(event)" style="display: none;">
-      <div class="form-group">
-        <label for="regName">Full Name</label>
-        <input type="text" id="regName" required placeholder="John Doe" />
-      </div>
-      <div class="form-group">
-        <label for="regEmail">Email Address</label>
-        <input type="email" id="regEmail" required placeholder="user@example.com" />
-      </div>
-      <div class="form-group">
-        <label for="regPassword">Password</label>
-        <input type="password" id="regPassword" required placeholder="••••••••" />
-      </div>
-      <button type="submit" style="width: 100%;">Create User Account</button>
-    </form>
-  </div>
-
-  <!-- Dashboard Screen -->
-  <div id="portalContainer" style="display: none;">
-    <header>
-      <div>
-        <h1 style="margin:0; font-size:20px;">Global Verified Careers Portal</h1>
-        <small id="userGreeting" style="color:#64748b;"></small>
-      </div>
-      <button class="btn-danger" onclick="handleLogout()">Logout</button>
-    </header>
-
-    <!-- Verified Job Portals Section -->
-    <h2 style="font-size: 18px; margin-bottom: 12px;">Verified Worldwide Career Opportunities</h2>
-    <div class="grid-3">
+    <!-- Verified Global Opportunities Grid -->
+    <div class="job-grid">
       <!-- Qatar Airways -->
       <div class="job-card">
-        <div class="job-header">
-          <img class="job-logo" src="https://logo.clearbit.com/qatarairways.com" alt="Qatar Airways" onerror="this.src='https://via.placeholder.com/48?text=QA'">
-          <div>
-            <div class="job-title">Qatar Airways</div>
-            <small style="color:#64748b;">Aviation & Cabin Crew</small>
+        <div>
+          <div class="job-header">
+            <div class="job-icon">✈️</div>
+            <div>
+              <div class="job-title">Qatar Airways Careers</div>
+              <div class="job-region">Global Aviation & Hospitality</div>
+            </div>
           </div>
+          <p class="job-desc">Cabin crew, ground services, engineering, and corporate roles worldwide.</p>
         </div>
-        <p style="font-size: 13px; color: #475569; margin: 5px 0 10px;">Apply directly on the official portal or send a request to moderator for CV customization.</p>
         <div class="job-actions">
-          <a class="btn-outline" href="https://careers.qatarairways.com" target="_blank" rel="noopener">Visit Careers</a>
-          <button type="button" onclick="openCvModal('Qatar Airways')">Request CV</button>
+          <a class="btn btn-outline" href="https://careers.qatarairways.com" target="_blank" rel="noopener">Visit Careers</a>
+          <button class="btn btn-primary" onclick="promptCvRequest('Qatar Airways')">Request CV</button>
         </div>
       </div>
 
       <!-- Carnival Cruise Line -->
       <div class="job-card">
-        <div class="job-header">
-          <img class="job-logo" src="https://logo.clearbit.com/carnival.com" alt="Carnival Cruise" onerror="this.src='https://via.placeholder.com/48?text=CCL'">
-          <div>
-            <div class="job-title">Carnival Cruise Line</div>
-            <small style="color:#64748b;">Maritime & Hospitality</small>
+        <div>
+          <div class="job-header">
+            <div class="job-icon">🚢</div>
+            <div>
+              <div class="job-title">Carnival Cruise Line</div>
+              <div class="job-region">Shipboard & Maritime Jobs</div>
+            </div>
           </div>
+          <p class="job-desc">Hospitality, marine operations, entertainment, and culinary positions onboard.</p>
         </div>
-        <p style="font-size: 13px; color: #475569; margin: 5px 0 10px;">Global shipboard opportunities. Request custom maritime resume support.</p>
         <div class="job-actions">
-          <a class="btn-outline" href="https://jobs.carnival.com" target="_blank" rel="noopener">Visit Careers</a>
-          <button type="button" onclick="openCvModal('Carnival Cruise Line')">Request CV</button>
+          <a class="btn btn-outline" href="https://jobs.carnival.com" target="_blank" rel="noopener">Visit Careers</a>
+          <button class="btn btn-primary" onclick="promptCvRequest('Carnival Cruise Ship')">Request CV</button>
         </div>
       </div>
 
-      <!-- Emirates Airline -->
+      <!-- USA Available Jobs -->
       <div class="job-card">
-        <div class="job-header">
-          <img class="job-logo" src="https://logo.clearbit.com/emirates.com" alt="Emirates" onerror="this.src='https://via.placeholder.com/48?text=EK'">
-          <div>
-            <div class="job-title">Emirates Group</div>
-            <small style="color:#64748b;">Aviation & Cargo</small>
+        <div>
+          <div class="job-header">
+            <div class="job-icon">🦅</div>
+            <div>
+              <div class="job-title">USA Official Job Portal</div>
+              <div class="job-region">United States (USAJOBS)</div>
+            </div>
           </div>
+          <p class="job-desc">Official government and verified federal opportunities across all US states.</p>
         </div>
-        <p style="font-size: 13px; color: #475569; margin: 5px 0 10px;">World-class aviation careers based in Dubai.</p>
         <div class="job-actions">
-          <a class="btn-outline" href="https://www.emiratesgroupcareers.com" target="_blank" rel="noopener">Visit Careers</a>
-          <button type="button" onclick="openCvModal('Emirates Group')">Request CV</button>
+          <a class="btn btn-outline" href="https://www.usajobs.gov" target="_blank" rel="noopener">Visit Careers</a>
+          <button class="btn btn-primary" onclick="promptCvRequest('USA Available Jobs')">Request CV</button>
         </div>
       </div>
 
-      <!-- Royal Caribbean -->
+      <!-- LinkedIn Jobs -->
       <div class="job-card">
-        <div class="job-header">
-          <img class="job-logo" src="https://logo.clearbit.com/royalcaribbean.com" alt="Royal Caribbean" onerror="this.src='https://via.placeholder.com/48?text=RCL'">
-          <div>
-            <div class="job-title">Royal Caribbean</div>
-            <small style="color:#64748b;">Cruise Operations</small>
+        <div>
+          <div class="job-header">
+            <div class="job-icon">💼</div>
+            <div>
+              <div class="job-title">LinkedIn Global Careers</div>
+              <div class="job-region">Worldwide Remote & Corporate</div>
+            </div>
           </div>
+          <p class="job-desc">Worldwide professional listings, remote vacancies, and corporate placements.</p>
         </div>
-        <p style="font-size: 13px; color: #475569; margin: 5px 0 10px;">International shipboard positions across all departments.</p>
         <div class="job-actions">
-          <a class="btn-outline" href="https://careers.royalcaribbeangroup.com" target="_blank" rel="noopener">Visit Careers</a>
-          <button type="button" onclick="openCvModal('Royal Caribbean')">Request CV</button>
+          <a class="btn btn-outline" href="https://www.linkedin.com/jobs" target="_blank" rel="noopener">Visit Careers</a>
+          <button class="btn btn-primary" onclick="promptCvRequest('LinkedIn Global Jobs')">Request CV</button>
         </div>
       </div>
 
-      <!-- Verified LinkedIn Careers -->
+      <!-- Canada Job Bank -->
       <div class="job-card">
-        <div class="job-header">
-          <img class="job-logo" src="https://logo.clearbit.com/linkedin.com" alt="LinkedIn" onerror="this.src='https://via.placeholder.com/48?text=IN'">
-          <div>
-            <div class="job-title">LinkedIn Jobs Portal</div>
-            <small style="color:#64748b;">Worldwide Verified Listings</small>
+        <div>
+          <div class="job-header">
+            <div class="job-icon">🍁</div>
+            <div>
+              <div class="job-title">Canada Job Bank</div>
+              <div class="job-region">Official Govt of Canada</div>
+            </div>
           </div>
+          <p class="job-desc">Verified job postings across Canada with LMIA/Express Entry friendly filters.</p>
         </div>
-        <p style="font-size: 13px; color: #475569; margin: 5px 0 10px;">Search thousands of globally verified corporate and remote jobs.</p>
         <div class="job-actions">
-          <a class="btn-outline" href="https://www.linkedin.com/jobs" target="_blank" rel="noopener">Visit Careers</a>
-          <button type="button" onclick="openCvModal('LinkedIn Global Jobs')">Request CV</button>
+          <a class="btn btn-outline" href="https://www.jobbank.gc.ca" target="_blank" rel="noopener">Visit Careers</a>
+          <button class="btn btn-primary" onclick="promptCvRequest('Canada Job Bank')">Request CV</button>
+        </div>
+      </div>
+
+      <!-- Europe, Middle East & Africa -->
+      <div class="job-card">
+        <div>
+          <div class="job-header">
+            <div class="job-icon">🌍</div>
+            <div>
+              <div class="job-title">EMEA Career Portal</div>
+              <div class="job-region">Europe, Middle East & Africa</div>
+            </div>
+          </div>
+          <p class="job-desc">EURES European jobs and Middle East Gulf career opportunities.</p>
+        </div>
+        <div class="job-actions">
+          <a class="btn btn-outline" href="https://eures.europa.eu" target="_blank" rel="noopener">Visit Careers</a>
+          <button class="btn btn-primary" onclick="promptCvRequest('EMEA Career Portal')">Request CV</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Document Exchange Section -->
-    <div class="grid">
-      <!-- Send File Panel -->
-      <div class="card">
-        <h2 id="formTitle">Send File</h2>
-        <form id="uploadForm" onsubmit="handleSendDocument(event)">
-          <div class="form-group" id="recipientGroup" style="display:none;">
-            <label for="recipientUser">Target User Email:</label>
-            <select id="recipientUser">
-              <!-- Dynamically populated with registered users -->
-            </select>
+  <!-- USER DASHBOARD PANEL -->
+  <div id="userDashboard" class="container dashboard-panel">
+    <h2 style="margin-bottom: 5px;">User Portal</h2>
+    <p style="color:var(--text-muted); font-size:14px; margin-bottom: 20px;">Send CV requests, exchange files, and receive reviewed documents from the Human CV Expert.</p>
+
+    <div class="panel-grid">
+      <!-- Send File / CV Request Form -->
+      <div style="background:#fff; border:1px solid var(--border); padding:18px; border-radius:8px;">
+        <h3 style="margin-bottom:12px; font-size:16px;">Submit CV Request / Send Document</h3>
+        <form id="userUploadForm" onsubmit="handleUserSubmit(event)">
+          <div class="form-group">
+            <label>Target Job / Application:</label>
+            <input type="text" id="userTargetJob" placeholder="e.g., Qatar Airways Cabin Crew" required />
           </div>
 
           <div class="form-group">
-            <label for="docName">Document Title / Note:</label>
-            <input type="text" id="docName" placeholder="e.g. Updated CV / Passport Scan" required />
+            <label>Full Details & Specific Instructions:</label>
+            <textarea id="userNotes" rows="3" placeholder="Provide details regarding your work history or requirements..." required></textarea>
           </div>
 
           <div class="form-group">
-            <label for="fileInput">Choose File:</label>
-            <input type="file" id="fileInput" required />
+            <label>Attach Current Resume / Document:</label>
+            <input type="file" id="userFile" required />
           </div>
 
-          <button type="submit" style="width: 100%;">Upload & Send</button>
+          <button type="submit" class="btn btn-primary" style="width:100%;">Send to Human CV Expert</button>
         </form>
       </div>
 
-      <!-- Inbox Panel -->
-      <div class="card">
-        <h2 id="dashboardTitle">Document Exchange Inbox</h2>
-        <ul id="documentList" class="doc-list">
-          <!-- Documents loaded dynamically -->
+      <!-- User Document Inbox -->
+      <div style="background:#fff; border:1px solid var(--border); padding:18px; border-radius:8px;">
+        <h3 style="margin-bottom:12px; font-size:16px;">Your Exchanged Documents</h3>
+        <ul class="doc-list" id="userDocList">
+          <!-- Populated dynamically -->
         </ul>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Modal for CV Application Request -->
-<div id="cvModal" class="modal">
-  <div class="modal-content">
-    <h3 style="margin-top:0;" id="modalCompanyTitle">Request CV Assistance</h3>
-    <form id="cvRequestForm" onsubmit="submitCvRequest(event)">
-      <input type="hidden" id="modalCompany" />
-      <div class="form-group">
-        <label for="modalPosition">Desired Position/Role:</label>
-        <input type="text" id="modalPosition" required placeholder="e.g. Cabin Crew / Restaurant Host" />
+  <!-- HUMAN CV EXPERT DASHBOARD PANEL -->
+  <div id="expertDashboard" class="container dashboard-panel">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+      <div>
+        <h2>Human CV Expert Portal</h2>
+        <p style="color:var(--text-muted); font-size:14px;">Review applicant submissions, manage files, and send optimized CVs.</p>
       </div>
-      <div class="form-group">
-        <label for="modalNotes">Additional Details for Moderator:</label>
-        <textarea id="modalNotes" rows="3" placeholder="Provide any existing experience or specific instructions..."></textarea>
+      <span class="badge badge-expert" style="padding:6px 12px; font-size:12px;">Secured Expert Mode</span>
+    </div>
+
+    <div class="panel-grid">
+      <!-- Send File back to User -->
+      <div style="background:#fff; border:1px solid var(--border); padding:18px; border-radius:8px;">
+        <h3 style="margin-bottom:12px; font-size:16px;">Send Optimized Document to User</h3>
+        <form id="expertUploadForm" onsubmit="handleExpertSubmit(event)">
+          <div class="form-group">
+            <label>Select Recipient User:</label>
+            <select id="expertUserSelect" required>
+              <!-- Dynamic user options -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Document Title / Remarks:</label>
+            <input type="text" id="expertDocTitle" placeholder="e.g., Final Optimized Resume - Qatar Airways" required />
+          </div>
+
+          <div class="form-group">
+            <label>Attach Document:</label>
+            <input type="file" id="expertFile" required />
+          </div>
+
+          <button type="submit" class="btn btn-expert" style="width:100%;">Upload & Send to User</button>
+        </form>
       </div>
-      <div class="form-group">
-        <label for="modalFile">Attach Current Draft CV/Resume (Optional):</label>
-        <input type="file" id="modalFile" />
+
+      <!-- Expert Control Panel & Requests -->
+      <div style="background:#fff; border:1px solid var(--border); padding:18px; border-radius:8px;">
+        <h3 style="margin-bottom:12px; font-size:16px;">Received Submissions & Portal Data</h3>
+        <ul class="doc-list" id="expertDocList">
+          <!-- Populated dynamically -->
+        </ul>
       </div>
-      <div style="display:flex; gap:10px; margin-top:15px;">
-        <button type="submit" style="flex:1;">Submit Request</button>
-        <button type="button" class="btn-danger" style="flex:1;" onclick="closeCvModal()">Cancel</button>
-      </div>
-    </form>
+    </div>
   </div>
-</div>
 
-<script>
-  // Dedicated Moderator Credentials
-  const STAFF_ACCOUNT = {
-    email: "mohamed.nyakagwa@gmail.com",
-    password: "Nyakagwa@6450",
-    name: "Staff Moderator",
-    role: "staff"
-  };
+  <!-- User Login / Register Modal -->
+  <div id="userAuthModal" class="modal">
+    <div class="modal-content">
+      <h3 style="margin-bottom: 12px;" id="authModalTitle">User Access Portal</h3>
+      <div style="display:flex; gap:10px; margin-bottom:15px; border-bottom:1px solid var(--border); padding-bottom:10px;">
+        <button class="btn btn-outline" style="flex:1;" onclick="switchAuthTab('login')">Login</button>
+        <button class="btn btn-outline" style="flex:1;" onclick="switchAuthTab('register')">Register Account</button>
+      </div>
 
-  // Local Storage Helpers
-  function getUsers() {
-    return JSON.parse(localStorage.getItem('portal_users')) || [];
-  }
+      <!-- User Login Form -->
+      <form id="userLoginForm" onsubmit="handleUserLogin(event)">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="uLoginEmail" required placeholder="user@example.com" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="uLoginPassword" required placeholder="••••••••" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Login to User Portal</button>
+      </form>
 
-  function saveUsers(users) {
-    localStorage.setItem('portal_users', JSON.stringify(users));
-  }
+      <!-- User Register Form -->
+      <form id="userRegisterForm" onsubmit="handleUserRegister(event)" style="display:none;">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="uRegName" required placeholder="John Doe" />
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="uRegEmail" required placeholder="user@example.com" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="uRegPassword" required placeholder="••••••••" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Create User Account</button>
+      </form>
+      <button class="btn btn-outline" style="width:100%; margin-top:10px;" onclick="closeModal('userAuthModal')">Cancel</button>
+    </div>
+  </div>
 
-  function getCurrentUser() {
-    return JSON.parse(localStorage.getItem('portal_active_session'));
-  }
+  <!-- Human CV Expert Login Modal -->
+  <div id="expertAuthModal" class="modal">
+    <div class="modal-content">
+      <h3 style="margin-bottom: 8px;">Human CV Expert Login</h3>
+      <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Secured portal for certified CV expert staff.</p>
 
-  function setCurrentUser(user) {
-    localStorage.setItem('portal_active_session', JSON.stringify(user));
-  }
+      <form onsubmit="handleExpertLogin(event)">
+        <div class="form-group">
+          <label>Expert Email Address</label>
+          <input type="email" id="expertEmail" required placeholder="mohamed.nyakagwa@gmail.com" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="expertPassword" required placeholder="••••••••" />
+        </div>
+        <button type="submit" class="btn btn-expert" style="width:100%;">Login as Human CV Expert</button>
+      </form>
+      <button class="btn btn-outline" style="width:100%; margin-top:10px;" onclick="closeModal('expertAuthModal')">Cancel</button>
+    </div>
+  </div>
 
-  function getDocuments() {
-    return JSON.parse(localStorage.getItem('portal_documents')) || [];
-  }
-
-  function saveDocuments(docs) {
-    localStorage.setItem('portal_documents', JSON.stringify(docs));
-  }
-
-  // Auth UI Switcher
-  function toggleAuthTab(tab) {
-    const isLogin = tab === 'login';
-    document.getElementById('tabLogin').className = isLogin ? 'auth-tab active' : 'auth-tab';
-    document.getElementById('tabRegister').className = !isLogin ? 'auth-tab active' : 'auth-tab';
-    document.getElementById('loginForm').style.display = isLogin ? 'block' : 'none';
-    document.getElementById('registerForm').style.display = !isLogin ? 'block' : 'none';
-  }
-
-  // User Registration Only
-  function handleRegister(e) {
-    e.preventDefault();
-    const name = document.getElementById('regName').value;
-    const email = document.getElementById('regEmail').value.toLowerCase().trim();
-    const password = document.getElementById('regPassword').value;
-
-    if (email === STAFF_ACCOUNT.email.toLowerCase()) {
-      alert('This email address is reserved for moderator login.');
-      return;
-    }
-
-    const users = getUsers();
-    if (users.find(u => u.email === email)) {
-      alert('An account with this email address already exists.');
-      return;
-    }
-
-    const newUser = { name, email, password, role: 'user' };
-    users.push(newUser);
-    saveUsers(users);
-
-    setCurrentUser(newUser);
-    initDashboard();
-  }
-
-  // Login Handler (Moderator & Regular Users)
-  function handleLogin(e) {
-    e.preventDefault();
-    const email = document.getElementById('loginEmail').value.toLowerCase().trim();
-    const password = document.getElementById('loginPassword').value;
-
-    // Check Moderator Login
-    if (email === STAFF_ACCOUNT.email.toLowerCase() && password === STAFF_ACCOUNT.password) {
-      setCurrentUser(STAFF_ACCOUNT);
-      initDashboard();
-      return;
-    }
-
-    // Check User Accounts
-    const users = getUsers();
-    const foundUser = users.find(u => u.email === email && u.password === password);
-
-    if (!foundUser) {
-      alert('Invalid email or password.');
-      return;
-    }
-
-    setCurrentUser(foundUser);
-    initDashboard();
-  }
-
-  function handleLogout() {
-    localStorage.removeItem('portal_active_session');
-    document.getElementById('portalContainer').style.display = 'none';
-    document.getElementById('authContainer').style.display = 'block';
-    document.getElementById('loginForm').reset();
-    document.getElementById('registerForm').reset();
-  }
-
-  // Dashboard Initialization
-  function initDashboard() {
-    const user = getCurrentUser();
-    if (!user) return;
-
-    document.getElementById('authContainer').style.display = 'none';
-    document.getElementById('portalContainer').style.display = 'block';
-
-    document.getElementById('userGreeting').textContent = `${user.name} (${user.role.toUpperCase()}) - ${user.email}`;
-
-    const formTitle = document.getElementById('formTitle');
-    const recipientGroup = document.getElementById('recipientGroup');
-    const dashboardTitle = document.getElementById('dashboardTitle');
-
-    if (user.role === 'staff') {
-      formTitle.textContent = 'Send Document to User';
-      recipientGroup.style.display = 'flex';
-      dashboardTitle.textContent = 'Moderator Portal - All Documents & CV Requests';
-      populateRecipientDropdown();
-    } else {
-      formTitle.textContent = 'Send File to Moderator';
-      recipientGroup.style.display = 'none';
-      dashboardTitle.textContent = 'Your Documents & Moderator Replies';
-    }
-
-    renderDocuments();
-  }
-
-  function populateRecipientDropdown() {
-    const users = getUsers().filter(u => u.role === 'user');
-    const select = document.getElementById('recipientUser');
-    select.innerHTML = '';
-
-    if (users.length === 0) {
-      select.innerHTML = '<option value="">No registered users found</option>';
-      return;
-    }
-
-    users.forEach(u => {
-      const opt = document.createElement('option');
-      opt.value = u.email;
-      opt.textContent = `${u.name} (${u.email})`;
-      select.appendChild(opt);
-    });
-  }
-
-  // Document & CV Request Handlers
-  function openCvModal(companyName) {
-    const user = getCurrentUser();
-    if (user.role === 'staff') {
-      alert('Moderators do not send CV requests to themselves.');
-      return;
-    }
-    document.getElementById('modalCompany').value = companyName;
-    document.getElementById('modalCompanyTitle').textContent = `CV Request: ${companyName}`;
-    document.getElementById('cvModal').style.display = 'flex';
-  }
-
-  function closeCvModal() {
-    document.getElementById('cvModal').style.display = 'none';
-    document.getElementById('cvRequestForm').reset();
-  }
-
-  function submitCvRequest(e) {
-    e.preventDefault();
-    const user = getCurrentUser();
-    const company = document.getElementById('modalCompany').value;
-    const position = document.getElementById('modalPosition').value;
-    const notes = document.getElementById('modalNotes').value;
-    const fileInput = document.getElementById('modalFile');
-
-    const processRequest = (fileData = null, fileName = '') => {
-      const docs = getDocuments();
-      const title = `[CV Request - ${company}] ${position}` + (fileName ? ` (${fileName})` : '');
-
-      const newDoc = {
-        id: Date.now(),
-        senderRole: user.role,
-        senderEmail: user.email,
-        senderName: user.name,
-        recipientEmail: STAFF_ACCOUNT.email,
-        fileName: title + (notes ? ` - Note: ${notes}` : ''),
-        fileData: fileData || '',
-        timestamp: new Date().toLocaleString()
-      };
-
-      docs.push(newDoc);
-      saveDocuments(docs);
-      closeCvModal();
-      renderDocuments();
-      alert('Your CV request has been submitted to the moderator.');
+  <script>
+    // HARDCODED HUMAN CV EXPERT CREDENTIALS
+    const EXPERT_CREDENTIALS = {
+      email: "mohamed.nyakagwa@gmail.com",
+      password: "Nyakagwa@6450",
+      name: "Human CV Expert",
+      role: "expert"
     };
 
-    if (fileInput.files.length) {
-      const file = fileInput.files[0];
-      const reader = new FileReader();
-      reader.onload = (event) => processRequest(event.target.result, file.name);
-      reader.readAsDataURL(file);
-    } else {
-      processRequest();
+    // Global State Management
+    function getUsers() { return JSON.parse(localStorage.getItem('mustafa_users')) || []; }
+    function saveUsers(users) { localStorage.setItem('mustafa_users', JSON.stringify(users)); }
+
+    function getSession() { return JSON.parse(localStorage.getItem('mustafa_session')); }
+    function setSession(user) { localStorage.setItem('mustafa_session', JSON.stringify(user)); }
+
+    function getDocs() { return JSON.parse(localStorage.getItem('mustafa_documents')) || []; }
+    function saveDocs(docs) { localStorage.setItem('mustafa_documents', JSON.stringify(docs)); }
+
+    // Audio & Haptic Notification Generator
+    function triggerAlertSoundAndVibration() {
+      // 1. Trigger Device Vibration
+      if ("vibrate" in navigator) {
+        navigator.vibrate([200, 100, 200, 100, 300]);
+      }
+
+      // 2. Synthesize Beep Sound using Web Audio API
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) {
+          const ctx = new AudioContext();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+          osc.frequency.setValueAtTime(880, ctx.currentTime + 0.15); // A5
+
+          gain.gain.setValueAtTime(0.3, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start();
+          osc.stop(ctx.currentTime + 0.4);
+        }
+      } catch (e) {
+        console.log('Audio playback restricted:', e);
+      }
     }
-  }
 
-  function handleSendDocument(e) {
-    e.preventDefault();
-    const user = getCurrentUser();
-    const docName = document.getElementById('docName').value;
-    const fileInput = document.getElementById('fileInput');
+    function triggerNotificationTest() {
+      triggerAlertSoundAndVibration();
+      alert("Notification Alert Tested: Sound played and Vibration triggered.");
+    }
 
-    if (!fileInput.files.length) return;
+    // Modal & View Controls
+    function openAuthModal(type) {
+      if (type === 'userLogin') {
+        document.getElementById('userAuthModal').style.display = 'flex';
+      } else if (type === 'expertLogin') {
+        document.getElementById('expertAuthModal').style.display = 'flex';
+      }
+    }
 
-    const file = fileInput.files[0];
-    const reader = new FileReader();
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
 
-    reader.onload = function (event) {
-      const docs = getDocuments();
-      
-      const recipient = user.role === 'staff' 
-        ? document.getElementById('recipientUser').value 
-        : STAFF_ACCOUNT.email;
+    function switchAuthTab(tab) {
+      document.getElementById('userLoginForm').style.display = tab === 'login' ? 'block' : 'none';
+      document.getElementById('userRegisterForm').style.display = tab === 'register' ? 'block' : 'none';
+    }
 
-      if (user.role === 'staff' && !recipient) {
-        alert('Please select a recipient user.');
+    function showPublicDashboard() {
+      document.getElementById('publicView').style.display = 'block';
+      document.getElementById('userDashboard').style.display = 'none';
+      document.getElementById('expertDashboard').style.display = 'none';
+    }
+
+    // User Authentication
+    function handleUserRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('uRegName').value;
+      const email = document.getElementById('uRegEmail').value.toLowerCase().trim();
+      const password = document.getElementById('uRegPassword').value;
+
+      if (email === EXPERT_CREDENTIALS.email) {
+        alert('This email is reserved for the Human CV Expert.');
         return;
       }
 
-      const newDoc = {
-        id: Date.now(),
-        senderRole: user.role,
-        senderEmail: user.email,
-        senderName: user.name,
-        recipientEmail: recipient,
-        fileName: docName + ' (' + file.name + ')',
-        fileData: event.target.result,
-        timestamp: new Date().toLocaleString()
-      };
+      const users = getUsers();
+      if (users.find(u => u.email === email)) {
+        alert('Account already exists. Please login.');
+        return;
+      }
 
-      docs.push(newDoc);
-      saveDocuments(docs);
+      const newUser = { name, email, password, role: 'user' };
+      users.push(newUser);
+      saveUsers(users);
 
-      document.getElementById('uploadForm').reset();
-      renderDocuments();
-    };
-
-    reader.readAsDataURL(file);
-  }
-
-  function renderDocuments() {
-    const user = getCurrentUser();
-    const docs = getDocuments();
-    const docList = document.getElementById('documentList');
-    docList.innerHTML = '';
-
-    const visibleDocs = docs.filter(doc => {
-      if (user.role === 'staff') return true;
-      return doc.recipientEmail === user.email || doc.senderEmail === user.email;
-    });
-
-    if (visibleDocs.length === 0) {
-      docList.innerHTML = '<li style="color:#64748b; font-size:13px;">No documents found.</li>';
-      return;
+      setSession(newUser);
+      closeModal('userAuthModal');
+      initApp();
     }
 
-    visibleDocs.reverse().forEach(doc => {
-      const li = document.createElement('li');
-      li.className = 'doc-item';
+    function handleUserLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('uLoginEmail').value.toLowerCase().trim();
+      const password = document.getElementById('uLoginPassword').value;
 
-      const isStaffSender = doc.senderRole === 'staff';
-      const badgeClass = isStaffSender ? 'badge-staff' : 'badge-user';
-      const badgeText = isStaffSender ? 'From Moderator' : 'From User';
+      const users = getUsers();
+      const user = users.find(u => u.email === email && u.password === password);
 
-      const downloadButton = doc.fileData 
-        ? `<a href="${doc.fileData}" download="${doc.fileName}" style="text-decoration:none;">
-            <button type="button" style="padding:4px 8px; font-size:12px;">Download</button>
-           </a>`
-        : `<span style="font-size:11px; color:#94a3b8;">No attachment</span>`;
+      if (!user) {
+        alert('Invalid email or password.');
+        return;
+      }
 
-      li.innerHTML = `
-        <div class="doc-info">
-          <strong>${doc.fileName}</strong>
-          <span class="doc-meta">
-            <span class="badge ${badgeClass}">${badgeText}</span>
-            From: ${doc.senderName} (${doc.senderEmail}) → To: ${doc.recipientEmail}
-          </span>
-          <span class="doc-meta">${doc.timestamp}</span>
-        </div>
-        ${downloadButton}
-      `;
+      setSession(user);
+      closeModal('userAuthModal');
+      initApp();
+    }
 
-      docList.appendChild(li);
-    });
-  }
+    // Expert Authentication
+    function handleExpertLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('expertEmail').value.toLowerCase().trim();
+      const password = document.getElementById('expertPassword').value;
 
-  if (getCurrentUser()) {
-    initDashboard();
-  }
-</script>
+      if (email === EXPERT_CREDENTIALS.email && password === EXPERT_CREDENTIALS.password) {
+        setSession(EXPERT_CREDENTIALS);
+        closeModal('expertAuthModal');
+        initApp();
+      } else {
+        alert('Invalid Human CV Expert Credentials.');
+      }
+    }
 
+    function handleLogout() {
+      localStorage.removeItem('mustafa_session');
+      showPublicDashboard();
+      initApp();
+    }
+
+    // Request CV Helper from Public Dashboard
+    function promptCvRequest(jobTitle) {
+      const session = getSession();
+      if (!session) {
+        alert('Please login or register a user account to send a CV request to the Human CV Expert.');
+        openAuthModal('userLogin');
+        return;
+      }
+
+      if (session.role === 'expert') {
+        alert('You are logged in as the Expert.');
+        return;
+      }
+
+      showUserDashboard();
+      document.getElementById('userTargetJob').value = jobTitle;
+      document.getElementById('userNotes').focus();
+    }
+
+    function showUserDashboard() {
+      document.getElementById('publicView').style.display = 'none';
+      document.getElementById('expertDashboard').style.display = 'none';
+      document.getElementById('userDashboard').style.display = 'block';
+    }
+
+    function showExpertDashboard() {
+      document.getElementById('publicView').style.display = 'none';
+      document.getElementById('userDashboard').style.display = 'none';
+      document.getElementById('expertDashboard').style.display = 'block';
+    }
+
+    // Two-Way Document Transfer Handlers
+    function handleUserSubmit(e) {
+      e.preventDefault();
+      const session = getSession();
+      const targetJob = document.getElementById('userTargetJob').value;
+      const notes = document.getElementById('userNotes').value;
+      const fileInput = document.getElementById('userFile');
+
+      if (!fileInput.files.length) return;
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(event) {
+        const docs = getDocs();
+        const newDoc = {
+          id: Date.now(),
+          senderRole: 'user',
+          senderEmail: session.email,
+          senderName: session.name,
+          recipientEmail: EXPERT_CREDENTIALS.email,
+          jobTitle: targetJob,
+          notes: notes,
+          fileName: file.name,
+          fileData: event.target.result,
+          timestamp: new Date().toLocaleString()
+        };
+
+        docs.push(newDoc);
+        saveDocs(docs);
+
+        // Reset Form & Sound Alert
+        document.getElementById('userUploadForm').reset();
+        triggerAlertSoundAndVibration();
+        renderUserDocs();
+        alert('Your document and CV details have been sent to the Human CV Expert.');
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    function handleExpertSubmit(e) {
+      e.preventDefault();
+      const recipientUser = document.getElementById('expertUserSelect').value;
+      const docTitle = document.getElementById('expertDocTitle').value;
+      const fileInput = document.getElementById('expertFile');
+
+      if (!recipientUser) {
+        alert('Select a valid user recipient.');
+        return;
+      }
+
+      if (!fileInput.files.length) return;
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(event) {
+        const docs = getDocs();
+        const newDoc = {
+          id: Date.now(),
+          senderRole: 'expert',
+          senderEmail: EXPERT_CREDENTIALS.email,
+          senderName: EXPERT_CREDENTIALS.name,
+          recipientEmail: recipientUser,
+          jobTitle: docTitle,
+          notes: 'Optimized by Human CV Expert',
+          fileName: file.name,
+          fileData: event.target.result,
+          timestamp: new Date().toLocaleString()
+        };
+
+        docs.push(newDoc);
+        saveDocs(docs);
+
+        document.getElementById('expertUploadForm').reset();
+        triggerAlertSoundAndVibration();
+        renderExpertDocs();
+        alert('Document sent to user successfully.');
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    // Expert Data Deletion Capability
+    function deleteDocumentByExpert(id) {
+      if (confirm('Are you sure you want to delete this submission record?')) {
+        let docs = getDocs();
+        docs = docs.filter(d => d.id !== id);
+        saveDocs(docs);
+        renderExpertDocs();
+      }
+    }
+
+    // Render Lists
+    function renderUserDocs() {
+      const session = getSession();
+      const docs = getDocs().filter(d => d.senderEmail === session.email || d.recipientEmail === session.email);
+      const container = document.getElementById('userDocList');
+      container.innerHTML = '';
+
+      let unreadCount = 0;
+
+      if (docs.length === 0) {
+        container.innerHTML = '<li style="color:var(--text-muted); font-size:13px;">No documents exchanged yet.</li>';
+        document.getElementById('bellCount').textContent = '0';
+        return;
+      }
+
+      docs.reverse().forEach(doc => {
+        const isFromExpert = doc.senderRole === 'expert';
+        if (isFromExpert) unreadCount++;
+
+        const li = document.createElement('li');
+        li.className = 'doc-item';
+        li.innerHTML = `
+          <div>
+            <span class="badge ${isFromExpert ? 'badge-expert' : 'badge-user'}">${isFromExpert ? 'From Expert' : 'Your Upload'}</span>
+            <div style="font-weight:bold; font-size:14px; margin-top:2px;">${doc.jobTitle}</div>
+            <div style="font-size:12px; color:#475569; margin:4px 0;">${doc.notes}</div>
+            <div style="font-size:11px; color:var(--text-muted);">${doc.fileName} • ${doc.timestamp}</div>
+          </div>
+          <a href="${doc.fileData}" download="${doc.fileName}" class="btn btn-outline" style="font-size:11px; padding:4px 8px;">Download</a>
+        `;
+        container.appendChild(li);
+      });
+
+      document.getElementById('bellCount').textContent = unreadCount;
+    }
+
+    function renderExpertDocs() {
+      const docs = getDocs();
+      const container = document.getElementById('expertDocList');
+      container.innerHTML = '';
+
+      let incomingCount = 0;
+
+      if (docs.length === 0) {
+        container.innerHTML = '<li style="color:var(--text-muted); font-size:13px;">No user submissions found.</li>';
+        document.getElementById('bellCount').textContent = '0';
+        return;
+      }
+
+      docs.slice().reverse().forEach(doc => {
+        const isFromUser = doc.senderRole === 'user';
+        if (isFromUser) incomingCount++;
+
+        const li = document.createElement('li');
+        li.className = 'doc-item';
+        li.innerHTML = `
+          <div>
+            <span class="badge ${isFromUser ? 'badge-user' : 'badge-expert'}">${isFromUser ? 'User Submission' : 'Sent by Expert'}</span>
+            <div style="font-weight:bold; font-size:14px; margin-top:2px;">${doc.jobTitle}</div>
+            <div style="font-size:12px; color:#334155;"><strong>Applicant:</strong> ${doc.senderName} (${doc.senderEmail})</div>
+            <div style="font-size:12px; color:#475569; margin:4px 0;"><strong>Details:</strong> ${doc.notes}</div>
+            <div style="font-size:11px; color:var(--text-muted);">${doc.fileName} • ${doc.timestamp}</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:5px;">
+            <a href="${doc.fileData}" download="${doc.fileName}" class="btn btn-outline" style="font-size:11px; padding:4px 8px;">Download</a>
+            <button class="btn btn-danger" style="font-size:11px; padding:4px 8px;" onclick="deleteDocumentByExpert(${doc.id})">Delete</button>
+          </div>
+        `;
+        container.appendChild(li);
+      });
+
+      document.getElementById('bellCount').textContent = incomingCount;
+      populateExpertUserDropdown();
+    }
+
+    function populateExpertUserDropdown() {
+      const users = getUsers();
+      const select = document.getElementById('expertUserSelect');
+      select.innerHTML = '<option value="">-- Select Recipient User --</option>';
+
+      users.forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u.email;
+        opt.textContent = `${u.name} (${u.email})`;
+        select.appendChild(opt);
+      });
+    }
+
+    // App Initialization & State Router
+    function initApp() {
+      const session = getSession();
+
+      if (!session) {
+        document.getElementById('navPublicButtons').style.display = 'flex';
+        document.getElementById('navActiveUser').style.display = 'none';
+        showPublicDashboard();
+      } else {
+        document.getElementById('navPublicButtons').style.display = 'none';
+        document.getElementById('navActiveUser').style.display = 'flex';
+        document.getElementById('activeUserName').textContent = `${session.name} (${session.role === 'expert' ? 'CV Expert' : 'User'})`;
+
+        if (session.role === 'expert') {
+          showExpertDashboard();
+          renderExpertDocs();
+        } else {
+          showUserDashboard();
+          renderUserDocs();
+        }
+      }
+    }
+
+    // Run on startup
+    initApp();
+  </script>
 </body>
 </html>
