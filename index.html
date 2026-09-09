@@ -146,8 +146,8 @@
   <!-- Auth Screen -->
   <div id="authContainer" class="auth-box">
     <div class="auth-tabs">
-      <div id="tabLogin" class="auth-tab active" onclick="toggleAuthTab('login')">Sign In</div>
-      <div id="tabRegister" class="auth-tab" onclick="toggleAuthTab('register')">User Registration</div>
+      <div id="tabLogin" class="auth-tab active" onclick="toggleAuthTab('login')">Login</div>
+      <div id="tabRegister" class="auth-tab" onclick="toggleAuthTab('register')">Register</div>
     </div>
 
     <!-- Login Form -->
@@ -163,7 +163,7 @@
       <button type="submit" style="width: 100%;">Sign In</button>
     </form>
 
-    <!-- Register Form (Only for Regular Users) -->
+    <!-- Register Form (Purely for Regular Users) -->
     <form id="registerForm" onsubmit="handleRegister(event)" style="display: none;">
       <div class="form-group">
         <label for="regName">Full Name</label>
@@ -177,7 +177,7 @@
         <label for="regPassword">Password</label>
         <input type="password" id="regPassword" required placeholder="••••••••" />
       </div>
-      <button type="submit" style="width: 100%;">Register Account</button>
+      <button type="submit" style="width: 100%;">Create Account</button>
     </form>
   </div>
 
@@ -229,7 +229,7 @@
 </div>
 
 <script>
-  // Hardcoded Staff Account
+  // Hardcoded Staff Account Credentials
   const STAFF_ACCOUNT = {
     email: "mohamed.nyakagwa@gmail.com",
     password: "Nyakagwa@6450",
@@ -271,7 +271,7 @@
     document.getElementById('registerForm').style.display = !isLogin ? 'block' : 'none';
   }
 
-  // Registration Handler (Only User Accounts)
+  // Registration Handler (Always assigns 'user' role)
   function handleRegister(e) {
     e.preventDefault();
     const name = document.getElementById('regName').value;
@@ -279,13 +279,13 @@
     const password = document.getElementById('regPassword').value;
 
     if (email === STAFF_ACCOUNT.email.toLowerCase()) {
-      alert('This email is reserved for staff login.');
+      alert('This email address is reserved for staff login.');
       return;
     }
 
     const users = getUsers();
     if (users.find(u => u.email === email)) {
-      alert('An account with this email already exists.');
+      alert('An account with this email address already exists.');
       return;
     }
 
@@ -297,7 +297,7 @@
     initDashboard();
   }
 
-  // Login Handler (Checks Staff First, Then User Accounts)
+  // Login Handler (Verifies Staff or Regular User)
   function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value.toLowerCase().trim();
