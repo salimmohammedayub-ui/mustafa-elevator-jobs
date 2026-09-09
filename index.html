@@ -310,7 +310,7 @@
     </div>
   </header>
 
-  <!-- Public Home & Job Dashboard (Default Page View) -->
+  <!-- Public Home & Job Dashboard -->
   <div id="publicView" class="container">
     <div class="hero">
       <h1>WELCOME TO MUSTAFA ELEVATE</h1>
@@ -452,6 +452,22 @@
           <div class="form-group">
             <label>Full Details & Specific Instructions:</label>
             <textarea id="userNotes" rows="3" placeholder="Provide details regarding your work history or requirements..." required></textarea>
+          </div>
+
+          <!-- Payment Notice Box -->
+          <div style="background: #fef3c7; border: 1px solid #f59e0b; padding: 12px; border-radius: 8px; margin-bottom: 14px;">
+            <strong style="color: #92400e; font-size: 14px; display: block; margin-bottom: 4px;">⚠️ Required Service Fee: 1,000 KSH</strong>
+            <p style="font-size: 13px; color: #78350f; line-height: 1.4;">
+              Please pay <strong>1,000 KSH</strong> before submitting your CV request.<br>
+              <strong>Payment Method:</strong> Lipa na M-Pesa (Paybill)<br>
+              <strong>Paybill Number:</strong> 247247<br>
+              <strong>Account Number:</strong> 0798698299
+            </p>
+          </div>
+
+          <div class="form-group">
+            <label>M-Pesa Transaction Code / Payment Reference:</label>
+            <input type="text" id="userPaymentRef" placeholder="e.g., QX12345678" required />
           </div>
 
           <div class="form-group">
@@ -603,12 +619,10 @@
 
     // Audio & Haptic Notification Generator
     function triggerAlertSoundAndVibration() {
-      // 1. Trigger Device Vibration
       if ("vibrate" in navigator) {
         navigator.vibrate([200, 100, 200, 100, 300]);
       }
 
-      // 2. Synthesize Beep Sound using Web Audio API
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         if (AudioContext) {
@@ -617,8 +631,8 @@
           const gain = ctx.createGain();
 
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
-          osc.frequency.setValueAtTime(880, ctx.currentTime + 0.15); // A5
+          osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+          osc.frequency.setValueAtTime(880, ctx.currentTime + 0.15);
 
           gain.gain.setValueAtTime(0.3, ctx.currentTime);
           gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
@@ -766,6 +780,7 @@
       const session = getSession();
       const targetJob = document.getElementById('userTargetJob').value;
       const notes = document.getElementById('userNotes').value;
+      const paymentRef = document.getElementById('userPaymentRef').value;
       const fileInput = document.getElementById('userFile');
 
       if (!fileInput.files.length) return;
@@ -783,6 +798,7 @@
           recipientEmail: EXPERT_CREDENTIALS.email,
           jobTitle: targetJob,
           notes: notes,
+          paymentRef: paymentRef,
           fileName: file.name,
           fileData: event.target.result,
           timestamp: new Date().toLocaleString()
@@ -791,11 +807,10 @@
         docs.push(newDoc);
         saveDocs(docs);
 
-        // Reset Form & Sound Alert
         document.getElementById('userUploadForm').reset();
         triggerAlertSoundAndVibration();
         renderUserDocs();
-        alert('Your document and CV details have been sent to the Human CV Expert.');
+        alert('Your document, CV details, and payment reference have been sent to the Human CV Expert.');
       };
 
       reader.readAsDataURL(file);
@@ -914,6 +929,7 @@
             <span class="badge ${isFromUser ? 'badge-user' : 'badge-expert'}">${isFromUser ? 'User Submission' : 'Sent by Expert'}</span>
             <div style="font-weight:bold; font-size:14px; margin-top:2px;">${doc.jobTitle}</div>
             <div style="font-size:12px; color:#334155;"><strong>Applicant:</strong> ${doc.senderName} (${doc.senderEmail})</div>
+            ${doc.paymentRef ? `<div style="font-size:12px; color:#065f46; background:#ecfdf5; padding:2px 6px; border-radius:4px; display:inline-block; margin:2px 0;"><strong>M-Pesa Ref:</strong> ${doc.paymentRef}</div>` : ''}
             <div style="font-size:12px; color:#475569; margin:4px 0;"><strong>Details:</strong> ${doc.notes}</div>
             <div style="font-size:11px; color:var(--text-muted);">${doc.fileName} • ${doc.timestamp}</div>
           </div>
@@ -965,7 +981,6 @@
       }
     }
 
-    // Run on startup
     initApp();
   </script>
 </body>
