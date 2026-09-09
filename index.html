@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document Portal | User & Staff Exchange</title>
+  <title>Global Careers & Document Portal</title>
   <style>
     :root {
       --primary: #2563eb;
@@ -13,6 +13,7 @@
       --text: #0f172a;
       --border: #e2e8f0;
       --danger: #ef4444;
+      --success: #10b981;
     }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -22,7 +23,7 @@
       padding: 20px;
     }
     .container {
-      max-width: 900px;
+      max-width: 1050px;
       margin: 0 auto;
     }
     header {
@@ -65,6 +66,12 @@
       grid-template-columns: 1fr 1fr;
       gap: 20px;
     }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
     @media (max-width: 768px) {
       .grid { grid-template-columns: 1fr; }
     }
@@ -80,13 +87,63 @@
       border-bottom: 2px solid var(--bg);
       padding-bottom: 10px;
     }
+    .job-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .job-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .job-logo {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      padding: 2px;
+      background: #fff;
+    }
+    .job-title {
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .job-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .job-actions a, .job-actions button {
+      flex: 1;
+      text-align: center;
+      font-size: 12px;
+      padding: 8px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+    .btn-outline:hover {
+      background: #eff6ff;
+    }
     .form-group {
       margin-bottom: 15px;
       display: flex;
       flex-direction: column;
       gap: 5px;
     }
-    select, input, button {
+    select, input, textarea, button {
       padding: 10px 12px;
       border-radius: 6px;
       border: 1px solid var(--border);
@@ -102,9 +159,7 @@
     button:hover {
       background: var(--primary-hover);
     }
-    button.btn-danger {
-      background: var(--danger);
-    }
+    button.btn-danger { background: var(--danger); }
     .doc-list {
       list-style: none;
       padding: 0;
@@ -138,6 +193,24 @@
     }
     .badge-user { background: #dbeafe; color: #1e40af; }
     .badge-staff { background: #dcfce7; color: #166534; }
+    
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.5);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+    }
   </style>
 </head>
 <body>
@@ -163,7 +236,7 @@
       <button type="submit" style="width: 100%;">Sign In</button>
     </form>
 
-    <!-- Register Form (Purely for Regular Users) -->
+    <!-- Register Form (Only User accounts allowed) -->
     <form id="registerForm" onsubmit="handleRegister(event)" style="display: none;">
       <div class="form-group">
         <label for="regName">Full Name</label>
@@ -177,7 +250,7 @@
         <label for="regPassword">Password</label>
         <input type="password" id="regPassword" required placeholder="••••••••" />
       </div>
-      <button type="submit" style="width: 100%;">Create Account</button>
+      <button type="submit" style="width: 100%;">Create User Account</button>
     </form>
   </div>
 
@@ -185,12 +258,97 @@
   <div id="portalContainer" style="display: none;">
     <header>
       <div>
-        <h1 style="margin:0; font-size:20px;">Document Portal</h1>
+        <h1 style="margin:0; font-size:20px;">Global Verified Careers Portal</h1>
         <small id="userGreeting" style="color:#64748b;"></small>
       </div>
       <button class="btn-danger" onclick="handleLogout()">Logout</button>
     </header>
 
+    <!-- Verified Job Portals Section -->
+    <h2 style="font-size: 18px; margin-bottom: 12px;">Verified Worldwide Career Opportunities</h2>
+    <div class="grid-3">
+      <!-- Qatar Airways -->
+      <div class="job-card">
+        <div class="job-header">
+          <img class="job-logo" src="https://logo.clearbit.com/qatarairways.com" alt="Qatar Airways" onerror="this.src='https://via.placeholder.com/48?text=QA'">
+          <div>
+            <div class="job-title">Qatar Airways</div>
+            <small style="color:#64748b;">Aviation & Cabin Crew</small>
+          </div>
+        </div>
+        <p style="font-size: 13px; color: #475569; margin: 5px 0 10px;">Apply directly on the official portal or send a request to moderator for CV customization.</p>
+        <div class="job-actions">
+          <a class="btn-outline" href="https://careers.qatarairways.com" target="_blank" rel="noopener">Visit Careers</a>
+          <button type="button" onclick="openCvModal('Qatar Airways')">Request CV</button>
+        </div>
+      </div>
+
+      <!-- Carnival Cruise Line -->
+      <div class="job-card">
+        <div class="job-header">
+          <img class="job-logo" src="https://logo.clearbit.com/carnival.com" alt="Carnival Cruise" onerror="this.src='https://via.placeholder.com/48?text=CCL'">
+          <div>
+            <div class="job-title">Carnival Cruise Line</div>
+            <small style="color:#64748b;">Maritime & Hospitality</small>
+          </div>
+        </div>
+        <p style="font-size: 13px; color: #475569; margin: 5px 0 10px;">Global shipboard opportunities. Request custom maritime resume support.</p>
+        <div class="job-actions">
+          <a class="btn-outline" href="https://jobs.carnival.com" target="_blank" rel="noopener">Visit Careers</a>
+          <button type="button" onclick="openCvModal('Carnival Cruise Line')">Request CV</button>
+        </div>
+      </div>
+
+      <!-- Emirates Airline -->
+      <div class="job-card">
+        <div class="job-header">
+          <img class="job-logo" src="https://logo.clearbit.com/emirates.com" alt="Emirates" onerror="this.src='https://via.placeholder.com/48?text=EK'">
+          <div>
+            <div class="job-title">Emirates Group</div>
+            <small style="color:#64748b;">Aviation & Cargo</small>
+          </div>
+        </div>
+        <p style="font-size: 13px; color: #475569; margin: 5px 0 10px;">World-class aviation careers based in Dubai.</p>
+        <div class="job-actions">
+          <a class="btn-outline" href="https://www.emiratesgroupcareers.com" target="_blank" rel="noopener">Visit Careers</a>
+          <button type="button" onclick="openCvModal('Emirates Group')">Request CV</button>
+        </div>
+      </div>
+
+      <!-- Royal Caribbean -->
+      <div class="job-card">
+        <div class="job-header">
+          <img class="job-logo" src="https://logo.clearbit.com/royalcaribbean.com" alt="Royal Caribbean" onerror="this.src='https://via.placeholder.com/48?text=RCL'">
+          <div>
+            <div class="job-title">Royal Caribbean</div>
+            <small style="color:#64748b;">Cruise Operations</small>
+          </div>
+        </div>
+        <p style="font-size: 13px; color: #475569; margin: 5px 0 10px;">International shipboard positions across all departments.</p>
+        <div class="job-actions">
+          <a class="btn-outline" href="https://careers.royalcaribbeangroup.com" target="_blank" rel="noopener">Visit Careers</a>
+          <button type="button" onclick="openCvModal('Royal Caribbean')">Request CV</button>
+        </div>
+      </div>
+
+      <!-- Verified LinkedIn Careers -->
+      <div class="job-card">
+        <div class="job-header">
+          <img class="job-logo" src="https://logo.clearbit.com/linkedin.com" alt="LinkedIn" onerror="this.src='https://via.placeholder.com/48?text=IN'">
+          <div>
+            <div class="job-title">LinkedIn Jobs Portal</div>
+            <small style="color:#64748b;">Worldwide Verified Listings</small>
+          </div>
+        </div>
+        <p style="font-size: 13px; color: #475569; margin: 5px 0 10px;">Search thousands of globally verified corporate and remote jobs.</p>
+        <div class="job-actions">
+          <a class="btn-outline" href="https://www.linkedin.com/jobs" target="_blank" rel="noopener">Visit Careers</a>
+          <button type="button" onclick="openCvModal('LinkedIn Global Jobs')">Request CV</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Document Exchange Section -->
     <div class="grid">
       <!-- Send File Panel -->
       <div class="card">
@@ -205,7 +363,7 @@
 
           <div class="form-group">
             <label for="docName">Document Title / Note:</label>
-            <input type="text" id="docName" placeholder="e.g. Resume / Review Feedback" required />
+            <input type="text" id="docName" placeholder="e.g. Updated CV / Passport Scan" required />
           </div>
 
           <div class="form-group">
@@ -217,9 +375,9 @@
         </form>
       </div>
 
-      <!-- Inbox / Dashboard Panel -->
+      <!-- Inbox Panel -->
       <div class="card">
-        <h2 id="dashboardTitle">Your Documents</h2>
+        <h2 id="dashboardTitle">Document Exchange Inbox</h2>
         <ul id="documentList" class="doc-list">
           <!-- Documents loaded dynamically -->
         </ul>
@@ -228,8 +386,34 @@
   </div>
 </div>
 
+<!-- Modal for CV Application Request -->
+<div id="cvModal" class="modal">
+  <div class="modal-content">
+    <h3 style="margin-top:0;" id="modalCompanyTitle">Request CV Assistance</h3>
+    <form id="cvRequestForm" onsubmit="submitCvRequest(event)">
+      <input type="hidden" id="modalCompany" />
+      <div class="form-group">
+        <label for="modalPosition">Desired Position/Role:</label>
+        <input type="text" id="modalPosition" required placeholder="e.g. Cabin Crew / Restaurant Host" />
+      </div>
+      <div class="form-group">
+        <label for="modalNotes">Additional Details for Moderator:</label>
+        <textarea id="modalNotes" rows="3" placeholder="Provide any existing experience or specific instructions..."></textarea>
+      </div>
+      <div class="form-group">
+        <label for="modalFile">Attach Current Draft CV/Resume (Optional):</label>
+        <input type="file" id="modalFile" />
+      </div>
+      <div style="display:flex; gap:10px; margin-top:15px;">
+        <button type="submit" style="flex:1;">Submit Request</button>
+        <button type="button" class="btn-danger" style="flex:1;" onclick="closeCvModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
-  // Hardcoded Staff Account Credentials
+  // Dedicated Moderator Credentials
   const STAFF_ACCOUNT = {
     email: "mohamed.nyakagwa@gmail.com",
     password: "Nyakagwa@6450",
@@ -237,7 +421,7 @@
     role: "staff"
   };
 
-  // App State Helpers
+  // Local Storage Helpers
   function getUsers() {
     return JSON.parse(localStorage.getItem('portal_users')) || [];
   }
@@ -271,7 +455,7 @@
     document.getElementById('registerForm').style.display = !isLogin ? 'block' : 'none';
   }
 
-  // Registration Handler (Always assigns 'user' role)
+  // User Registration Only
   function handleRegister(e) {
     e.preventDefault();
     const name = document.getElementById('regName').value;
@@ -279,7 +463,7 @@
     const password = document.getElementById('regPassword').value;
 
     if (email === STAFF_ACCOUNT.email.toLowerCase()) {
-      alert('This email address is reserved for staff login.');
+      alert('This email address is reserved for moderator login.');
       return;
     }
 
@@ -297,20 +481,20 @@
     initDashboard();
   }
 
-  // Login Handler (Verifies Staff or Regular User)
+  // Login Handler (Moderator & Regular Users)
   function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value.toLowerCase().trim();
     const password = document.getElementById('loginPassword').value;
 
-    // 1. Check Staff Login
+    // Check Moderator Login
     if (email === STAFF_ACCOUNT.email.toLowerCase() && password === STAFF_ACCOUNT.password) {
       setCurrentUser(STAFF_ACCOUNT);
       initDashboard();
       return;
     }
 
-    // 2. Check User Accounts
+    // Check User Accounts
     const users = getUsers();
     const foundUser = users.find(u => u.email === email && u.password === password);
 
@@ -348,12 +532,12 @@
     if (user.role === 'staff') {
       formTitle.textContent = 'Send Document to User';
       recipientGroup.style.display = 'flex';
-      dashboardTitle.textContent = 'Staff Portal - All User Documents';
+      dashboardTitle.textContent = 'Moderator Portal - All Documents & CV Requests';
       populateRecipientDropdown();
     } else {
-      formTitle.textContent = 'Send File to Staff';
+      formTitle.textContent = 'Send File to Moderator';
       recipientGroup.style.display = 'none';
-      dashboardTitle.textContent = 'Your Dashboard - Received & Sent Files';
+      dashboardTitle.textContent = 'Your Documents & Moderator Replies';
     }
 
     renderDocuments();
@@ -377,7 +561,63 @@
     });
   }
 
-  // Document Operations
+  // Document & CV Request Handlers
+  function openCvModal(companyName) {
+    const user = getCurrentUser();
+    if (user.role === 'staff') {
+      alert('Moderators do not send CV requests to themselves.');
+      return;
+    }
+    document.getElementById('modalCompany').value = companyName;
+    document.getElementById('modalCompanyTitle').textContent = `CV Request: ${companyName}`;
+    document.getElementById('cvModal').style.display = 'flex';
+  }
+
+  function closeCvModal() {
+    document.getElementById('cvModal').style.display = 'none';
+    document.getElementById('cvRequestForm').reset();
+  }
+
+  function submitCvRequest(e) {
+    e.preventDefault();
+    const user = getCurrentUser();
+    const company = document.getElementById('modalCompany').value;
+    const position = document.getElementById('modalPosition').value;
+    const notes = document.getElementById('modalNotes').value;
+    const fileInput = document.getElementById('modalFile');
+
+    const processRequest = (fileData = null, fileName = '') => {
+      const docs = getDocuments();
+      const title = `[CV Request - ${company}] ${position}` + (fileName ? ` (${fileName})` : '');
+
+      const newDoc = {
+        id: Date.now(),
+        senderRole: user.role,
+        senderEmail: user.email,
+        senderName: user.name,
+        recipientEmail: STAFF_ACCOUNT.email,
+        fileName: title + (notes ? ` - Note: ${notes}` : ''),
+        fileData: fileData || '',
+        timestamp: new Date().toLocaleString()
+      };
+
+      docs.push(newDoc);
+      saveDocuments(docs);
+      closeCvModal();
+      renderDocuments();
+      alert('Your CV request has been submitted to the moderator.');
+    };
+
+    if (fileInput.files.length) {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      reader.onload = (event) => processRequest(event.target.result, file.name);
+      reader.readAsDataURL(file);
+    } else {
+      processRequest();
+    }
+  }
+
   function handleSendDocument(e) {
     e.preventDefault();
     const user = getCurrentUser();
@@ -444,7 +684,13 @@
 
       const isStaffSender = doc.senderRole === 'staff';
       const badgeClass = isStaffSender ? 'badge-staff' : 'badge-user';
-      const badgeText = isStaffSender ? 'From Staff' : 'From User';
+      const badgeText = isStaffSender ? 'From Moderator' : 'From User';
+
+      const downloadButton = doc.fileData 
+        ? `<a href="${doc.fileData}" download="${doc.fileName}" style="text-decoration:none;">
+            <button type="button" style="padding:4px 8px; font-size:12px;">Download</button>
+           </a>`
+        : `<span style="font-size:11px; color:#94a3b8;">No attachment</span>`;
 
       li.innerHTML = `
         <div class="doc-info">
@@ -455,9 +701,7 @@
           </span>
           <span class="doc-meta">${doc.timestamp}</span>
         </div>
-        <a href="${doc.fileData}" download="${doc.fileName}" style="text-decoration:none;">
-          <button type="button" style="padding:4px 8px; font-size:12px;">Download</button>
-        </a>
+        ${downloadButton}
       `;
 
       docList.appendChild(li);
