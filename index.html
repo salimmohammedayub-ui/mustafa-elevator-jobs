@@ -12,7 +12,7 @@
       --card: #ffffff;
       --text: #0f172a;
       --border: #e2e8f0;
-      --success: #16a34a;
+      --danger: #ef4444;
     }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -35,26 +35,30 @@
       border: 1px solid var(--border);
       margin-bottom: 20px;
     }
-    .role-selector {
+    .auth-box {
+      max-width: 400px;
+      margin: 60px auto;
+      background: var(--card);
+      padding: 25px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+    .auth-tabs {
       display: flex;
       gap: 10px;
-      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
     }
-    select, input, button {
-      padding: 8px 12px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      font-size: 14px;
-    }
-    button {
-      background: var(--primary);
-      color: white;
-      border: none;
+    .auth-tab {
+      padding: 8px 16px;
       cursor: pointer;
+      border-bottom: 2px solid transparent;
       font-weight: 600;
     }
-    button:hover {
-      background: var(--primary-hover);
+    .auth-tab.active {
+      border-color: var(--primary);
+      color: var(--primary);
     }
     .grid {
       display: grid;
@@ -81,6 +85,25 @@
       display: flex;
       flex-direction: column;
       gap: 5px;
+    }
+    select, input, button {
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+    }
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover {
+      background: var(--primary-hover);
+    }
+    button.btn-danger {
+      background: var(--danger);
     }
     .doc-list {
       list-style: none;
@@ -120,72 +143,114 @@
 <body>
 
 <div class="container">
-  <header>
-    <div>
-      <h1 style="margin:0; font-size:20px;">Document Portal</h1>
-      <small style="color:#64748b;">Send and Receive Documents</small>
-    </div>
-    <div class="role-selector">
-      <label for="currentRole"><strong>Current View:</strong></label>
-      <select id="currentRole" onchange="switchRole()">
-        <option value="user">Registered User (John Doe)</option>
-        <option value="staff">Staff / Moderator</option>
-      </select>
-    </div>
-  </header>
-
-  <div class="grid">
-    <!-- Send File Panel -->
-    <div class="card">
-      <h2 id="formTitle">Send File to Staff</h2>
-      <form id="uploadForm" onsubmit="handleSendDocument(event)">
-        <div class="form-group" id="recipientGroup" style="display:none;">
-          <label for="recipientUser">Select Target User:</label>
-          <select id="recipientUser">
-            <option value="John Doe">John Doe (User)</option>
-            <option value="Jane Smith">Jane Smith (User)</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="docName">Document Title / Note:</label>
-          <input type="text" id="docName" placeholder="e.g. Updated CV / Review Request" required />
-        </div>
-
-        <div class="form-group">
-          <label for="fileInput">Choose File:</label>
-          <input type="file" id="fileInput" required />
-        </div>
-
-        <button type="submit" style="width: 100%;">Upload & Send</button>
-      </form>
+  <!-- Auth Screen -->
+  <div id="authContainer" class="auth-box">
+    <div class="auth-tabs">
+      <div id="tabLogin" class="auth-tab active" onclick="toggleAuthTab('login')">Login</div>
+      <div id="tabRegister" class="auth-tab" onclick="toggleAuthTab('register')">Register</div>
     </div>
 
-    <!-- Inbox / Dashboard Panel -->
-    <div class="card">
-      <h2 id="dashboardTitle">Your Received Documents</h2>
-      <ul id="documentList" class="doc-list">
-        <!-- Documents loaded dynamically -->
-      </ul>
+    <!-- Login Form -->
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="loginEmail">Email Address</label>
+        <input type="email" id="loginEmail" required placeholder="user@example.com" />
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" required placeholder="••••••••" />
+      </div>
+      <button type="submit" style="width: 100%;">Sign In</button>
+    </form>
+
+    <!-- Register Form -->
+    <form id="registerForm" onsubmit="handleRegister(event)" style="display: none;">
+      <div class="form-group">
+        <label for="regName">Full Name</label>
+        <input type="text" id="regName" required placeholder="John Doe" />
+      </div>
+      <div class="form-group">
+        <label for="regEmail">Email Address</label>
+        <input type="email" id="regEmail" required placeholder="user@example.com" />
+      </div>
+      <div class="form-group">
+        <label for="regPassword">Password</label>
+        <input type="password" id="regPassword" required placeholder="••••••••" />
+      </div>
+      <div class="form-group">
+        <label for="regRole">Account Type</label>
+        <select id="regRole">
+          <option value="user">Registered User</option>
+          <option value="staff">Staff / Moderator</option>
+        </select>
+      </div>
+      <button type="submit" style="width: 100%;">Create Account</button>
+    </form>
+  </div>
+
+  <!-- Dashboard Screen (Hidden until logged in) -->
+  <div id="portalContainer" style="display: none;">
+    <header>
+      <div>
+        <h1 style="margin:0; font-size:20px;">Document Portal</h1>
+        <small id="userGreeting" style="color:#64748b;"></small>
+      </div>
+      <button class="btn-danger" onclick="handleLogout()">Logout</button>
+    </header>
+
+    <div class="grid">
+      <!-- Send File Panel -->
+      <div class="card">
+        <h2 id="formTitle">Send File</h2>
+        <form id="uploadForm" onsubmit="handleSendDocument(event)">
+          <div class="form-group" id="recipientGroup" style="display:none;">
+            <label for="recipientUser">Target User Email:</label>
+            <select id="recipientUser">
+              <!-- Dynamically populated with registered users -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="docName">Document Title / Note:</label>
+            <input type="text" id="docName" placeholder="e.g. Resume / Review Feedback" required />
+          </div>
+
+          <div class="form-group">
+            <label for="fileInput">Choose File:</label>
+            <input type="file" id="fileInput" required />
+          </div>
+
+          <button type="submit" style="width: 100%;">Upload & Send</button>
+        </form>
+      </div>
+
+      <!-- Inbox / Dashboard Panel -->
+      <div class="card">
+        <h2 id="dashboardTitle">Your Received Documents</h2>
+        <ul id="documentList" class="doc-list">
+          <!-- Documents loaded dynamically -->
+        </ul>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-  // Initial demo data stored in localStorage if not already present
-  if (!localStorage.getItem('portal_documents')) {
-    const initialDocs = [
-      {
-        id: 1,
-        senderRole: 'staff',
-        senderName: 'Staff Moderator',
-        recipientUser: 'John Doe',
-        fileName: 'Approved_Application.pdf',
-        fileData: '#',
-        timestamp: new Date().toLocaleString()
-      }
-    ];
-    localStorage.setItem('portal_documents', JSON.stringify(initialDocs));
+  // App State Helpers
+  function getUsers() {
+    return JSON.parse(localStorage.getItem('portal_users')) || [];
+  }
+
+  function saveUsers(users) {
+    localStorage.setItem('portal_users', JSON.stringify(users));
+  }
+
+  function getCurrentUser() {
+    return JSON.parse(localStorage.getItem('portal_active_session'));
+  }
+
+  function setCurrentUser(user) {
+    localStorage.setItem('portal_active_session', JSON.stringify(user));
   }
 
   function getDocuments() {
@@ -196,28 +261,112 @@
     localStorage.setItem('portal_documents', JSON.stringify(docs));
   }
 
-  function switchRole() {
-    const role = document.getElementById('currentRole').value;
+  // Auth UI Switcher
+  function toggleAuthTab(tab) {
+    const isLogin = tab === 'login';
+    document.getElementById('tabLogin').className = isLogin ? 'auth-tab active' : 'auth-tab';
+    document.getElementById('tabRegister').className = !isLogin ? 'auth-tab active' : 'auth-tab';
+    document.getElementById('loginForm').style.display = isLogin ? 'block' : 'none';
+    document.getElementById('registerForm').style.display = !isLogin ? 'block' : 'none';
+  }
+
+  // Authentication Handlers
+  function handleRegister(e) {
+    e.preventDefault();
+    const name = document.getElementById('regName').value;
+    const email = document.getElementById('regEmail').value.toLowerCase().trim();
+    const password = document.getElementById('regPassword').value;
+    const role = document.getElementById('regRole').value;
+
+    const users = getUsers();
+    if (users.find(u => u.email === email)) {
+      alert('An account with this email already exists.');
+      return;
+    }
+
+    const newUser = { name, email, password, role };
+    users.push(newUser);
+    saveUsers(users);
+
+    setCurrentUser(newUser);
+    initDashboard();
+  }
+
+  function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.toLowerCase().trim();
+    const password = document.getElementById('loginPassword').value;
+
+    const users = getUsers();
+    const foundUser = users.find(u => u.email === email && u.password === password);
+
+    if (!foundUser) {
+      alert('Invalid email or password.');
+      return;
+    }
+
+    setCurrentUser(foundUser);
+    initDashboard();
+  }
+
+  function handleLogout() {
+    localStorage.removeItem('portal_active_session');
+    document.getElementById('portalContainer').style.display = 'none';
+    document.getElementById('authContainer').style.display = 'block';
+    document.getElementById('loginForm').reset();
+    document.getElementById('registerForm').reset();
+  }
+
+  // Dashboard Initialization
+  function initDashboard() {
+    const user = getCurrentUser();
+    if (!user) return;
+
+    document.getElementById('authContainer').style.display = 'none';
+    document.getElementById('portalContainer').style.display = 'block';
+
+    document.getElementById('userGreeting').textContent = `${user.name} (${user.role.toUpperCase()}) - ${user.email}`;
+
     const formTitle = document.getElementById('formTitle');
     const recipientGroup = document.getElementById('recipientGroup');
     const dashboardTitle = document.getElementById('dashboardTitle');
 
-    if (role === 'staff') {
+    if (user.role === 'staff') {
       formTitle.textContent = 'Send Document to User';
       recipientGroup.style.display = 'flex';
-      dashboardTitle.textContent = 'Staff Portal - All User Submissions';
+      dashboardTitle.textContent = 'Staff Portal - All Files Management';
+      populateRecipientDropdown();
     } else {
       formTitle.textContent = 'Send File to Staff';
       recipientGroup.style.display = 'none';
-      dashboardTitle.textContent = 'Your Dashboard - Received Files';
+      dashboardTitle.textContent = 'Your Dashboard - Received & Sent Files';
     }
 
     renderDocuments();
   }
 
+  function populateRecipientDropdown() {
+    const users = getUsers().filter(u => u.role === 'user');
+    const select = document.getElementById('recipientUser');
+    select.innerHTML = '';
+
+    if (users.length === 0) {
+      select.innerHTML = '<option value="">No registered users found</option>';
+      return;
+    }
+
+    users.forEach(u => {
+      const opt = document.createElement('option');
+      opt.value = u.email;
+      opt.textContent = `${u.name} (${u.email})`;
+      select.appendChild(opt);
+    });
+  }
+
+  // Document Operations
   function handleSendDocument(e) {
     e.preventDefault();
-    const role = document.getElementById('currentRole').value;
+    const user = getCurrentUser();
     const docName = document.getElementById('docName').value;
     const fileInput = document.getElementById('fileInput');
 
@@ -229,20 +378,29 @@
     reader.onload = function (event) {
       const docs = getDocuments();
       
+      const recipient = user.role === 'staff' 
+        ? document.getElementById('recipientUser').value 
+        : 'staff';
+
+      if (user.role === 'staff' && !recipient) {
+        alert('Please select a recipient user.');
+        return;
+      }
+
       const newDoc = {
         id: Date.now(),
-        senderRole: role,
-        senderName: role === 'staff' ? 'Staff Moderator' : 'John Doe',
-        recipientUser: role === 'staff' ? document.getElementById('recipientUser').value : 'John Doe',
+        senderRole: user.role,
+        senderEmail: user.email,
+        senderName: user.name,
+        recipientEmail: recipient,
         fileName: docName + ' (' + file.name + ')',
-        fileData: event.target.result, // Base64 representation of file
+        fileData: event.target.result,
         timestamp: new Date().toLocaleString()
       };
 
       docs.push(newDoc);
       saveDocuments(docs);
 
-      // Reset form
       document.getElementById('uploadForm').reset();
       renderDocuments();
     };
@@ -251,17 +409,17 @@
   }
 
   function renderDocuments() {
-    const role = document.getElementById('currentRole').value;
+    const user = getCurrentUser();
     const docs = getDocuments();
     const docList = document.getElementById('documentList');
     docList.innerHTML = '';
 
-    // Filter rules:
-    // - User sees docs sent to them by staff, or docs they sent to staff
-    // - Staff sees all documents sent across the system
+    // Authorization Rule:
+    // - Staff sees all documents in the system
+    // - User sees documents sent specifically to their email or sent by them to staff
     const visibleDocs = docs.filter(doc => {
-      if (role === 'staff') return true;
-      return doc.recipientUser === 'John Doe' || (doc.senderName === 'John Doe' && doc.senderRole === 'user');
+      if (user.role === 'staff') return true;
+      return doc.recipientEmail === user.email || doc.senderEmail === user.email;
     });
 
     if (visibleDocs.length === 0) {
@@ -282,7 +440,7 @@
           <strong>${doc.fileName}</strong>
           <span class="doc-meta">
             <span class="badge ${badgeClass}">${badgeText}</span>
-            Sender: ${doc.senderName} | Target: ${doc.recipientUser}
+            From: ${doc.senderName} (${doc.senderEmail}) → To: ${doc.recipientEmail}
           </span>
           <span class="doc-meta">${doc.timestamp}</span>
         </div>
@@ -295,8 +453,10 @@
     });
   }
 
-  // Initial render
-  renderDocuments();
+  // Auto-restore session on page load
+  if (getCurrentUser()) {
+    initDashboard();
+  }
 </script>
 
 </body>
