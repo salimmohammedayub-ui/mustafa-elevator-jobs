@@ -494,7 +494,7 @@
     <div class="panel-grid">
       <div style="background:#fff; border:1px solid var(--border); padding:18px; border-radius:8px;">
         <h3 style="margin-bottom:12px; font-size:16px;">Send Optimized Document to User</h3>
-        <form id="expertUploadForm" onsubmit="handleExpertSubmit(event)">
+        <form id="expertUploadForm">
           <div class="form-group">
             <label>Select Recipient User:</label>
             <select id="expertUserSelect" required></select>
@@ -583,7 +583,7 @@
   </div>
 
   <script>
-    // YOUR FIREBASE CONFIGURATION
+    // FIREBASE CONFIGURATION
     const firebaseConfig = {
       apiKey: "AIzaSyAyN39Jn0qsxIMFbL5x9J3UFG_7pBUMkts",
       authDomain: "mustafa-elevate-cv-expart.firebaseapp.com",
@@ -748,7 +748,6 @@
       document.getElementById('expertDashboard').style.display = 'block';
     }
 
-    // Submit Document to Firebase Firestore Cloud
     function handleUserSubmit(e) {
       e.preventDefault();
       const session = getSession();
@@ -789,43 +788,39 @@
       reader.readAsDataURL(file);
     }
 
-    function handleExpertSubmit(e) {
+    function sendDocumentToUser(e) {
       e.preventDefault();
-      const recipientUser = document.getElementById('expertUserSelect').value;
+      const recipientEmail = document.getElementById('expertUserSelect').value;
       const docTitle = document.getElementById('expertDocTitle').value;
       const fileInput = document.getElementById('expertFile');
 
-      if (!recipientUser) {
-        alert('Select a valid user recipient.');
+      if (!recipientEmail || !fileInput.files.length) {
+        alert('Please select a recipient and attach a document.');
         return;
       }
-
-      if (!fileInput.files.length) return;
 
       const file = fileInput.files[0];
       const reader = new FileReader();
 
       reader.onload = function(event) {
-        const newDoc = {
+        db.collection('documents').add({
           senderRole: 'expert',
           senderEmail: EXPERT_CREDENTIALS.email,
           senderName: EXPERT_CREDENTIALS.name,
-          recipientEmail: recipientUser,
+          recipientEmail: recipientEmail,
           jobTitle: docTitle,
           notes: 'Optimized by Human CV Expert',
           fileName: file.name,
           fileData: event.target.result,
           timestamp: new Date().toLocaleString(),
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        };
-
-        db.collection('documents').add(newDoc)
-          .then(() => {
-            document.getElementById('expertUploadForm').reset();
-            triggerAlertSoundAndVibration();
-            alert('Document sent to user successfully.');
-          })
-          .catch((error) => alert('Error sending document: ' + error.message));
+        })
+        .then(() => {
+          alert('Document successfully sent to user!');
+          document.getElementById('expertUploadForm').reset();
+          triggerAlertSoundAndVibration();
+        })
+        .catch(error => alert('Error sending document: ' + error.message));
       };
 
       reader.readAsDataURL(file);
@@ -838,7 +833,6 @@
       }
     }
 
-    // Real-Time Firebase Listeners
     function listenUserDocs() {
       const session = getSession();
       const container = document.getElementById('userDocList');
@@ -960,6 +954,10 @@
       }
     }
 
+    // Attach submit listener to Expert Form
+    document.getElementById('expertUploadForm').addEventListener('submit', sendDocumentToUser);
+
+    // Initialize application
     initApp();
   </script>
 </body>
