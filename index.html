@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MUSTAFA ELEVATE | Worldwide Careers & Human CV Experts</title>
+  
+  <!-- Firebase App & Firestore SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
   <style>
     :root {
       --primary: #2563eb;
@@ -293,13 +298,11 @@
         <span>MUSTAFA ELEVATE</span>
       </div>
 
-      <!-- Header Action Buttons -->
       <div class="nav-buttons" id="navPublicButtons">
         <button class="btn btn-outline" onclick="openAuthModal('userLogin')">User Login / Register</button>
         <button class="btn btn-expert" onclick="openAuthModal('expertLogin')">Human CV Expert</button>
       </div>
 
-      <!-- Active Logged In Bar -->
       <div class="nav-buttons" id="navActiveUser" style="display: none;">
         <div class="notification-bell" onclick="triggerNotificationTest()" title="Click to test Sound & Vibration">
           🔔 <span class="bell-badge" id="bellCount">0</span>
@@ -310,7 +313,7 @@
     </div>
   </header>
 
-  <!-- Public Home & Job Dashboard -->
+  <!-- Public Home View -->
   <div id="publicView" class="container">
     <div class="hero">
       <h1>WELCOME TO MUSTAFA ELEVATE</h1>
@@ -322,9 +325,7 @@
       <span style="font-size:13px; color:var(--text-muted);">Updated Verified Links</span>
     </div>
 
-    <!-- Verified Global Opportunities Grid -->
     <div class="job-grid">
-      <!-- Qatar Airways -->
       <div class="job-card">
         <div>
           <div class="job-header">
@@ -342,7 +343,6 @@
         </div>
       </div>
 
-      <!-- Carnival Cruise Line -->
       <div class="job-card">
         <div>
           <div class="job-header">
@@ -360,7 +360,6 @@
         </div>
       </div>
 
-      <!-- USA Available Jobs -->
       <div class="job-card">
         <div>
           <div class="job-header">
@@ -378,7 +377,6 @@
         </div>
       </div>
 
-      <!-- LinkedIn Jobs -->
       <div class="job-card">
         <div>
           <div class="job-header">
@@ -396,7 +394,6 @@
         </div>
       </div>
 
-      <!-- Canada Job Bank -->
       <div class="job-card">
         <div>
           <div class="job-header">
@@ -414,7 +411,6 @@
         </div>
       </div>
 
-      <!-- Europe, Middle East & Africa -->
       <div class="job-card">
         <div>
           <div class="job-header">
@@ -440,7 +436,6 @@
     <p style="color:var(--text-muted); font-size:14px; margin-bottom: 20px;">Send CV requests, exchange files, and receive reviewed documents from the Human CV Expert.</p>
 
     <div class="panel-grid">
-      <!-- Send File / CV Request Form -->
       <div style="background:#fff; border:1px solid var(--border); padding:18px; border-radius:8px;">
         <h3 style="margin-bottom:12px; font-size:16px;">Submit CV Request / Send Document</h3>
         <form id="userUploadForm" onsubmit="handleUserSubmit(event)">
@@ -454,7 +449,7 @@
             <textarea id="userNotes" rows="3" placeholder="Provide details regarding your work history or requirements..." required></textarea>
           </div>
 
-          <!-- Payment Notice Box -->
+          <!-- Mandatory Payment Notice -->
           <div style="background: #fef3c7; border: 1px solid #f59e0b; padding: 12px; border-radius: 8px; margin-bottom: 14px;">
             <strong style="color: #92400e; font-size: 14px; display: block; margin-bottom: 4px;">⚠️ Required Service Fee: 1,000 KSH</strong>
             <p style="font-size: 13px; color: #78350f; line-height: 1.4;">
@@ -479,12 +474,9 @@
         </form>
       </div>
 
-      <!-- User Document Inbox -->
       <div style="background:#fff; border:1px solid var(--border); padding:18px; border-radius:8px;">
         <h3 style="margin-bottom:12px; font-size:16px;">Your Exchanged Documents</h3>
-        <ul class="doc-list" id="userDocList">
-          <!-- Populated dynamically -->
-        </ul>
+        <ul class="doc-list" id="userDocList"></ul>
       </div>
     </div>
   </div>
@@ -500,15 +492,12 @@
     </div>
 
     <div class="panel-grid">
-      <!-- Send File back to User -->
       <div style="background:#fff; border:1px solid var(--border); padding:18px; border-radius:8px;">
         <h3 style="margin-bottom:12px; font-size:16px;">Send Optimized Document to User</h3>
         <form id="expertUploadForm" onsubmit="handleExpertSubmit(event)">
           <div class="form-group">
             <label>Select Recipient User:</label>
-            <select id="expertUserSelect" required>
-              <!-- Dynamic user options -->
-            </select>
+            <select id="expertUserSelect" required></select>
           </div>
 
           <div class="form-group">
@@ -525,12 +514,9 @@
         </form>
       </div>
 
-      <!-- Expert Control Panel & Requests -->
       <div style="background:#fff; border:1px solid var(--border); padding:18px; border-radius:8px;">
         <h3 style="margin-bottom:12px; font-size:16px;">Received Submissions & Portal Data</h3>
-        <ul class="doc-list" id="expertDocList">
-          <!-- Populated dynamically -->
-        </ul>
+        <ul class="doc-list" id="expertDocList"></ul>
       </div>
     </div>
   </div>
@@ -538,13 +524,12 @@
   <!-- User Login / Register Modal -->
   <div id="userAuthModal" class="modal">
     <div class="modal-content">
-      <h3 style="margin-bottom: 12px;" id="authModalTitle">User Access Portal</h3>
+      <h3 style="margin-bottom: 12px;">User Access Portal</h3>
       <div style="display:flex; gap:10px; margin-bottom:15px; border-bottom:1px solid var(--border); padding-bottom:10px;">
         <button class="btn btn-outline" style="flex:1;" onclick="switchAuthTab('login')">Login</button>
         <button class="btn btn-outline" style="flex:1;" onclick="switchAuthTab('register')">Register Account</button>
       </div>
 
-      <!-- User Login Form -->
       <form id="userLoginForm" onsubmit="handleUserLogin(event)">
         <div class="form-group">
           <label>Email Address</label>
@@ -557,7 +542,6 @@
         <button type="submit" class="btn btn-primary" style="width:100%;">Login to User Portal</button>
       </form>
 
-      <!-- User Register Form -->
       <form id="userRegisterForm" onsubmit="handleUserRegister(event)" style="display:none;">
         <div class="form-group">
           <label>Full Name</label>
@@ -599,7 +583,21 @@
   </div>
 
   <script>
-    // HARDCODED HUMAN CV EXPERT CREDENTIALS
+    // YOUR FIREBASE CONFIGURATION
+    const firebaseConfig = {
+      apiKey: "AIzaSyAyN39Jn0qsxIMFbL5x9J3UFG_7pBUMkts",
+      authDomain: "mustafa-elevate-cv-expart.firebaseapp.com",
+      projectId: "mustafa-elevate-cv-expart",
+      storageBucket: "mustafa-elevate-cv-expart.firebasestorage.app",
+      messagingSenderId: "1014340750256",
+      appId: "1:1014340750256:web:0d9d57dd4dcf41bf5ae475",
+      measurementId: "G-JEN6FPC4E4"
+    };
+
+    // Initialize Firebase & Firestore
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
     const EXPERT_CREDENTIALS = {
       email: "mohamed.nyakagwa@gmail.com",
       password: "Nyakagwa@6450",
@@ -607,45 +605,31 @@
       role: "expert"
     };
 
-    // Global State Management
+    // Session helpers
     function getUsers() { return JSON.parse(localStorage.getItem('mustafa_users')) || []; }
     function saveUsers(users) { localStorage.setItem('mustafa_users', JSON.stringify(users)); }
-
     function getSession() { return JSON.parse(localStorage.getItem('mustafa_session')); }
     function setSession(user) { localStorage.setItem('mustafa_session', JSON.stringify(user)); }
 
-    function getDocs() { return JSON.parse(localStorage.getItem('mustafa_documents')) || []; }
-    function saveDocs(docs) { localStorage.setItem('mustafa_documents', JSON.stringify(docs)); }
-
-    // Audio & Haptic Notification Generator
     function triggerAlertSoundAndVibration() {
-      if ("vibrate" in navigator) {
-        navigator.vibrate([200, 100, 200, 100, 300]);
-      }
-
+      if ("vibrate" in navigator) navigator.vibrate([200, 100, 200, 100, 300]);
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         if (AudioContext) {
           const ctx = new AudioContext();
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
-
           osc.type = 'sine';
           osc.frequency.setValueAtTime(587.33, ctx.currentTime);
           osc.frequency.setValueAtTime(880, ctx.currentTime + 0.15);
-
           gain.gain.setValueAtTime(0.3, ctx.currentTime);
           gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
-
           osc.connect(gain);
           gain.connect(ctx.destination);
-
           osc.start();
           osc.stop(ctx.currentTime + 0.4);
         }
-      } catch (e) {
-        console.log('Audio playback restricted:', e);
-      }
+      } catch (e) { console.log(e); }
     }
 
     function triggerNotificationTest() {
@@ -653,18 +637,12 @@
       alert("Notification Alert Tested: Sound played and Vibration triggered.");
     }
 
-    // Modal & View Controls
     function openAuthModal(type) {
-      if (type === 'userLogin') {
-        document.getElementById('userAuthModal').style.display = 'flex';
-      } else if (type === 'expertLogin') {
-        document.getElementById('expertAuthModal').style.display = 'flex';
-      }
+      if (type === 'userLogin') document.getElementById('userAuthModal').style.display = 'flex';
+      else if (type === 'expertLogin') document.getElementById('expertAuthModal').style.display = 'flex';
     }
 
-    function closeModal(id) {
-      document.getElementById(id).style.display = 'none';
-    }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
     function switchAuthTab(tab) {
       document.getElementById('userLoginForm').style.display = tab === 'login' ? 'block' : 'none';
@@ -677,7 +655,6 @@
       document.getElementById('expertDashboard').style.display = 'none';
     }
 
-    // User Authentication
     function handleUserRegister(e) {
       e.preventDefault();
       const name = document.getElementById('uRegName').value;
@@ -698,7 +675,6 @@
       const newUser = { name, email, password, role: 'user' };
       users.push(newUser);
       saveUsers(users);
-
       setSession(newUser);
       closeModal('userAuthModal');
       initApp();
@@ -722,7 +698,6 @@
       initApp();
     }
 
-    // Expert Authentication
     function handleExpertLogin(e) {
       e.preventDefault();
       const email = document.getElementById('expertEmail').value.toLowerCase().trim();
@@ -743,7 +718,6 @@
       initApp();
     }
 
-    // Request CV Helper from Public Dashboard
     function promptCvRequest(jobTitle) {
       const session = getSession();
       if (!session) {
@@ -774,7 +748,7 @@
       document.getElementById('expertDashboard').style.display = 'block';
     }
 
-    // Two-Way Document Transfer Handlers
+    // Submit Document to Firebase Firestore Cloud
     function handleUserSubmit(e) {
       e.preventDefault();
       const session = getSession();
@@ -789,9 +763,7 @@
       const reader = new FileReader();
 
       reader.onload = function(event) {
-        const docs = getDocs();
         const newDoc = {
-          id: Date.now(),
           senderRole: 'user',
           senderEmail: session.email,
           senderName: session.name,
@@ -801,16 +773,17 @@
           paymentRef: paymentRef,
           fileName: file.name,
           fileData: event.target.result,
-          timestamp: new Date().toLocaleString()
+          timestamp: new Date().toLocaleString(),
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
         };
 
-        docs.push(newDoc);
-        saveDocs(docs);
-
-        document.getElementById('userUploadForm').reset();
-        triggerAlertSoundAndVibration();
-        renderUserDocs();
-        alert('Your document, CV details, and payment reference have been sent to the Human CV Expert.');
+        db.collection('documents').add(newDoc)
+          .then(() => {
+            document.getElementById('userUploadForm').reset();
+            triggerAlertSoundAndVibration();
+            alert('Your document and payment details have been sent to the Human CV Expert cloud!');
+          })
+          .catch((error) => alert('Error sending document: ' + error.message));
       };
 
       reader.readAsDataURL(file);
@@ -833,9 +806,7 @@
       const reader = new FileReader();
 
       reader.onload = function(event) {
-        const docs = getDocs();
         const newDoc = {
-          id: Date.now(),
           senderRole: 'expert',
           senderEmail: EXPERT_CREDENTIALS.email,
           senderName: EXPERT_CREDENTIALS.name,
@@ -844,105 +815,114 @@
           notes: 'Optimized by Human CV Expert',
           fileName: file.name,
           fileData: event.target.result,
-          timestamp: new Date().toLocaleString()
+          timestamp: new Date().toLocaleString(),
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
         };
 
-        docs.push(newDoc);
-        saveDocs(docs);
-
-        document.getElementById('expertUploadForm').reset();
-        triggerAlertSoundAndVibration();
-        renderExpertDocs();
-        alert('Document sent to user successfully.');
+        db.collection('documents').add(newDoc)
+          .then(() => {
+            document.getElementById('expertUploadForm').reset();
+            triggerAlertSoundAndVibration();
+            alert('Document sent to user successfully.');
+          })
+          .catch((error) => alert('Error sending document: ' + error.message));
       };
 
       reader.readAsDataURL(file);
     }
 
-    // Expert Data Deletion Capability
-    function deleteDocumentByExpert(id) {
+    function deleteDocumentFromFirestore(docId) {
       if (confirm('Are you sure you want to delete this submission record?')) {
-        let docs = getDocs();
-        docs = docs.filter(d => d.id !== id);
-        saveDocs(docs);
-        renderExpertDocs();
+        db.collection('documents').doc(docId).delete()
+          .catch((err) => alert('Delete failed: ' + err.message));
       }
     }
 
-    // Render Lists
-    function renderUserDocs() {
+    // Real-Time Firebase Listeners
+    function listenUserDocs() {
       const session = getSession();
-      const docs = getDocs().filter(d => d.senderEmail === session.email || d.recipientEmail === session.email);
       const container = document.getElementById('userDocList');
-      container.innerHTML = '';
 
-      let unreadCount = 0;
+      db.collection('documents')
+        .orderBy('createdAt', 'desc')
+        .onSnapshot((snapshot) => {
+          container.innerHTML = '';
+          let unreadCount = 0;
 
-      if (docs.length === 0) {
-        container.innerHTML = '<li style="color:var(--text-muted); font-size:13px;">No documents exchanged yet.</li>';
-        document.getElementById('bellCount').textContent = '0';
-        return;
-      }
+          if (snapshot.empty) {
+            container.innerHTML = '<li style="color:var(--text-muted); font-size:13px;">No documents exchanged yet.</li>';
+            document.getElementById('bellCount').textContent = '0';
+            return;
+          }
 
-      docs.reverse().forEach(doc => {
-        const isFromExpert = doc.senderRole === 'expert';
-        if (isFromExpert) unreadCount++;
+          snapshot.forEach((docSnap) => {
+            const doc = docSnap.data();
+            if (doc.senderEmail === session.email || doc.recipientEmail === session.email) {
+              const isFromExpert = doc.senderRole === 'expert';
+              if (isFromExpert) unreadCount++;
 
-        const li = document.createElement('li');
-        li.className = 'doc-item';
-        li.innerHTML = `
-          <div>
-            <span class="badge ${isFromExpert ? 'badge-expert' : 'badge-user'}">${isFromExpert ? 'From Expert' : 'Your Upload'}</span>
-            <div style="font-weight:bold; font-size:14px; margin-top:2px;">${doc.jobTitle}</div>
-            <div style="font-size:12px; color:#475569; margin:4px 0;">${doc.notes}</div>
-            <div style="font-size:11px; color:var(--text-muted);">${doc.fileName} • ${doc.timestamp}</div>
-          </div>
-          <a href="${doc.fileData}" download="${doc.fileName}" class="btn btn-outline" style="font-size:11px; padding:4px 8px;">Download</a>
-        `;
-        container.appendChild(li);
-      });
+              const li = document.createElement('li');
+              li.className = 'doc-item';
+              li.innerHTML = `
+                <div>
+                  <span class="badge ${isFromExpert ? 'badge-expert' : 'badge-user'}">${isFromExpert ? 'From Expert' : 'Your Upload'}</span>
+                  <div style="font-weight:bold; font-size:14px; margin-top:2px;">${doc.jobTitle}</div>
+                  <div style="font-size:12px; color:#475569; margin:4px 0;">${doc.notes}</div>
+                  <div style="font-size:11px; color:var(--text-muted);">${doc.fileName} • ${doc.timestamp}</div>
+                </div>
+                <a href="${doc.fileData}" download="${doc.fileName}" class="btn btn-outline" style="font-size:11px; padding:4px 8px;">Download</a>
+              `;
+              container.appendChild(li);
+            }
+          });
 
-      document.getElementById('bellCount').textContent = unreadCount;
+          document.getElementById('bellCount').textContent = unreadCount;
+        });
     }
 
-    function renderExpertDocs() {
-      const docs = getDocs();
+    function listenExpertDocs() {
       const container = document.getElementById('expertDocList');
-      container.innerHTML = '';
 
-      let incomingCount = 0;
+      db.collection('documents')
+        .orderBy('createdAt', 'desc')
+        .onSnapshot((snapshot) => {
+          container.innerHTML = '';
+          let incomingCount = 0;
 
-      if (docs.length === 0) {
-        container.innerHTML = '<li style="color:var(--text-muted); font-size:13px;">No user submissions found.</li>';
-        document.getElementById('bellCount').textContent = '0';
-        return;
-      }
+          if (snapshot.empty) {
+            container.innerHTML = '<li style="color:var(--text-muted); font-size:13px;">No user submissions found.</li>';
+            document.getElementById('bellCount').textContent = '0';
+            return;
+          }
 
-      docs.slice().reverse().forEach(doc => {
-        const isFromUser = doc.senderRole === 'user';
-        if (isFromUser) incomingCount++;
+          snapshot.forEach((docSnap) => {
+            const doc = docSnap.data();
+            const docId = docSnap.id;
+            const isFromUser = doc.senderRole === 'user';
+            if (isFromUser) incomingCount++;
 
-        const li = document.createElement('li');
-        li.className = 'doc-item';
-        li.innerHTML = `
-          <div>
-            <span class="badge ${isFromUser ? 'badge-user' : 'badge-expert'}">${isFromUser ? 'User Submission' : 'Sent by Expert'}</span>
-            <div style="font-weight:bold; font-size:14px; margin-top:2px;">${doc.jobTitle}</div>
-            <div style="font-size:12px; color:#334155;"><strong>Applicant:</strong> ${doc.senderName} (${doc.senderEmail})</div>
-            ${doc.paymentRef ? `<div style="font-size:12px; color:#065f46; background:#ecfdf5; padding:2px 6px; border-radius:4px; display:inline-block; margin:2px 0;"><strong>M-Pesa Ref:</strong> ${doc.paymentRef}</div>` : ''}
-            <div style="font-size:12px; color:#475569; margin:4px 0;"><strong>Details:</strong> ${doc.notes}</div>
-            <div style="font-size:11px; color:var(--text-muted);">${doc.fileName} • ${doc.timestamp}</div>
-          </div>
-          <div style="display:flex; flex-direction:column; gap:5px;">
-            <a href="${doc.fileData}" download="${doc.fileName}" class="btn btn-outline" style="font-size:11px; padding:4px 8px;">Download</a>
-            <button class="btn btn-danger" style="font-size:11px; padding:4px 8px;" onclick="deleteDocumentByExpert(${doc.id})">Delete</button>
-          </div>
-        `;
-        container.appendChild(li);
-      });
+            const li = document.createElement('li');
+            li.className = 'doc-item';
+            li.innerHTML = `
+              <div>
+                <span class="badge ${isFromUser ? 'badge-user' : 'badge-expert'}">${isFromUser ? 'User Submission' : 'Sent by Expert'}</span>
+                <div style="font-weight:bold; font-size:14px; margin-top:2px;">${doc.jobTitle}</div>
+                <div style="font-size:12px; color:#334155;"><strong>Applicant:</strong> ${doc.senderName} (${doc.senderEmail})</div>
+                ${doc.paymentRef ? `<div style="font-size:12px; color:#065f46; background:#ecfdf5; padding:2px 6px; border-radius:4px; display:inline-block; margin:2px 0;"><strong>M-Pesa Ref:</strong> ${doc.paymentRef}</div>` : ''}
+                <div style="font-size:12px; color:#475569; margin:4px 0;"><strong>Details:</strong> ${doc.notes}</div>
+                <div style="font-size:11px; color:var(--text-muted);">${doc.fileName} • ${doc.timestamp}</div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:5px;">
+                <a href="${doc.fileData}" download="${doc.fileName}" class="btn btn-outline" style="font-size:11px; padding:4px 8px;">Download</a>
+                <button class="btn btn-danger" style="font-size:11px; padding:4px 8px;" onclick="deleteDocumentFromFirestore('${docId}')">Delete</button>
+              </div>
+            `;
+            container.appendChild(li);
+          });
 
-      document.getElementById('bellCount').textContent = incomingCount;
-      populateExpertUserDropdown();
+          document.getElementById('bellCount').textContent = incomingCount;
+          populateExpertUserDropdown();
+        });
     }
 
     function populateExpertUserDropdown() {
@@ -958,7 +938,6 @@
       });
     }
 
-    // App Initialization & State Router
     function initApp() {
       const session = getSession();
 
@@ -973,10 +952,10 @@
 
         if (session.role === 'expert') {
           showExpertDashboard();
-          renderExpertDocs();
+          listenExpertDocs();
         } else {
           showUserDashboard();
-          renderUserDocs();
+          listenUserDocs();
         }
       }
     }
