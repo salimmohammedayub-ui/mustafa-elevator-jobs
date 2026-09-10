@@ -100,6 +100,8 @@
     .btn-expert:hover { background: #334155; }
     .btn-danger { background: var(--danger); color: white; }
     .btn-danger:hover { background: #dc2626; }
+    .btn-success { background: var(--success); color: white; }
+    .btn-success:hover { background: #059669; }
 
     /* Notification Bell */
     .notification-bell {
@@ -141,13 +143,15 @@
     .hero h1 { font-size: 30px; margin-bottom: 8px; }
     .hero p { opacity: 0.9; font-size: 15px; max-width: 650px; margin: 0 auto; }
 
-    /* Job Dashboard Grid */
+    /* Section Titles & Grids */
     .section-title {
       font-size: 20px;
-      margin-bottom: 15px;
+      margin: 25px 0 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
     }
 
     .job-grid {
@@ -202,7 +206,29 @@
       padding: 9px;
     }
 
-    /* Auth Modals & Panels */
+    /* Success Stories Grid */
+    .success-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin-bottom: 35px;
+    }
+
+    .success-card {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .success-name { font-weight: 800; color: #065f46; font-size: 15px; }
+    .success-role { font-weight: 600; color: #047857; font-size: 13px; }
+    .success-details { font-size: 12px; color: #064e3b; line-height: 1.4; }
+
+    /* Modals & Inputs */
     .modal {
       display: none;
       position: fixed;
@@ -259,11 +285,7 @@
       .panel-grid { grid-template-columns: 1fr; }
     }
 
-    .doc-list {
-      list-style: none;
-      margin-top: 10px;
-    }
-
+    .doc-list { list-style: none; margin-top: 10px; }
     .doc-item {
       border: 1px solid var(--border);
       border-radius: 8px;
@@ -320,26 +342,145 @@
       <p>Your portal to worldwide verified careers & expert Human CV customization. Browse global opportunities below or request professional resume assistance.</p>
     </div>
 
+    <!-- SUCCESSFUL PLACEMENTS SECTION -->
     <div class="section-title">
-      <h2>Worldwide Careers Dashboard</h2>
-      <span style="font-size:13px; color:var(--text-muted);">Updated Verified Links</span>
+      <h2>🎉 Successful Candidates & Placements</h2>
+      <span style="font-size:13px; color:var(--text-muted);">Verified Success Stories</span>
+    </div>
+    <div class="success-grid" id="publicSuccessGrid">
+      <div class="success-card">
+        <div class="success-name">🌟 Ahmed K.</div>
+        <div class="success-role">Secured Role: Cabin Crew at Qatar Airways</div>
+        <div class="success-details">"Mustafa Elevate Human CV Expert reformatted my resume to match airline ATS criteria. Selected in Doha recruitment!"</div>
+      </div>
+      <div class="success-card">
+        <div class="success-name">🌟 Grace M.</div>
+        <div class="success-role">Secured Role: Hospitality Specialist at Princess Cruises</div>
+        <div class="success-details">"Passed maritime resume screening within 2 weeks of requesting expert CV assistance!"</div>
+      </div>
     </div>
 
+    <!-- DYNAMICALLY POSTED EXPERT JOBS SECTION -->
+    <div class="section-title">
+      <h2>📌 Featured Jobs Posted by Expert</h2>
+      <span style="font-size:13px; color:var(--text-muted);">Direct Links</span>
+    </div>
+    <div class="job-grid" id="dynamicJobGrid">
+      <!-- Dynamic jobs posted by expert will load here -->
+    </div>
+
+    <!-- MILITARY & DEFENSE JOBS -->
+    <div class="section-title">
+      <h2>🪖 Worldwide Military & Defense Opportunities</h2>
+      <span style="font-size:13px; color:var(--text-muted);">Verified Forces Portals</span>
+    </div>
     <div class="job-grid">
       <div class="job-card">
         <div>
           <div class="job-header">
-            <div class="job-icon">✈️</div>
+            <div class="job-icon">🎖️</div>
             <div>
-              <div class="job-title">Qatar Airways Careers</div>
-              <div class="job-region">Global Aviation & Hospitality</div>
+              <div class="job-title">USA Military Careers</div>
+              <div class="job-region">United States Defense</div>
             </div>
           </div>
-          <p class="job-desc">Cabin crew, ground services, engineering, and corporate roles worldwide.</p>
+          <p class="job-desc">Official careers in US Army, Navy, Air Force, Marines, and Coast Guard.</p>
         </div>
         <div class="job-actions">
-          <a class="btn btn-outline" href="https://careers.qatarairways.com" target="_blank" rel="noopener">Visit Careers</a>
-          <button class="btn btn-primary" onclick="promptCvRequest('Qatar Airways')">Request CV</button>
+          <a class="btn btn-outline" href="https://www.todaysmilitary.com" target="_blank" rel="noopener">Visit Careers</a>
+          <button class="btn btn-primary" onclick="promptCvRequest('USA Military')">Request CV</button>
+        </div>
+      </div>
+
+      <div class="job-card">
+        <div>
+          <div class="job-header">
+            <div class="job-icon">🇬🇧</div>
+            <div>
+              <div class="job-title">UK Armed Forces Careers</div>
+              <div class="job-region">United Kingdom</div>
+            </div>
+          </div>
+          <p class="job-desc">Royal Navy, British Army, and Royal Air Force official career opportunities.</p>
+        </div>
+        <div class="job-actions">
+          <a class="btn btn-outline" href="https://jobs.army.mod.uk" target="_blank" rel="noopener">Visit Careers</a>
+          <button class="btn btn-primary" onclick="promptCvRequest('UK Armed Forces')">Request CV</button>
+        </div>
+      </div>
+
+      <div class="job-card">
+        <div>
+          <div class="job-header">
+            <div class="job-icon">🇨🇦</div>
+            <div>
+              <div class="job-title">Canadian Armed Forces</div>
+              <div class="job-region">Canada</div>
+            </div>
+          </div>
+          <p class="job-desc">Full-time and part-time military occupations across all Canadian territories.</p>
+        </div>
+        <div class="job-actions">
+          <a class="btn btn-outline" href="https://forces.ca" target="_blank" rel="noopener">Visit Careers</a>
+          <button class="btn btn-primary" onclick="promptCvRequest('Canadian Armed Forces')">Request CV</button>
+        </div>
+      </div>
+
+      <div class="job-card">
+        <div>
+          <div class="job-header">
+            <div class="job-icon">🇩🇪</div>
+            <div>
+              <div class="job-title">Bundeswehr & European Defense</div>
+              <div class="job-region">Germany & Europe</div>
+            </div>
+          </div>
+          <p class="job-desc">Official military and civilian positions within German & European forces.</p>
+        </div>
+        <div class="job-actions">
+          <a class="btn btn-outline" href="https://www.bundeswehrkarriere.de" target="_blank" rel="noopener">Visit Careers</a>
+          <button class="btn btn-primary" onclick="promptCvRequest('Bundeswehr Defense')">Request CV</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CRUISE LINE CARRIERS -->
+    <div class="section-title">
+      <h2>🚢 Worldwide Cruise Line & Maritime Careers</h2>
+      <span style="font-size:13px; color:var(--text-muted);">Global Fleets</span>
+    </div>
+    <div class="job-grid">
+      <div class="job-card">
+        <div>
+          <div class="job-header">
+            <div class="job-icon">👑</div>
+            <div>
+              <div class="job-title">Princess Cruises Careers</div>
+              <div class="job-region">Global Maritime</div>
+            </div>
+          </div>
+          <p class="job-desc">Hospitality, culinary, entertainment, and deck/engine shipboard roles.</p>
+        </div>
+        <div class="job-actions">
+          <a class="btn btn-outline" href="https://www.princess.com/careers" target="_blank" rel="noopener">Visit Careers</a>
+          <button class="btn btn-primary" onclick="promptCvRequest('Princess Cruises')">Request CV</button>
+        </div>
+      </div>
+
+      <div class="job-card">
+        <div>
+          <div class="job-header">
+            <div class="job-icon">⚓</div>
+            <div>
+              <div class="job-title">MSC Cruises Careers</div>
+              <div class="job-region">Worldwide Cruise Ops</div>
+            </div>
+          </div>
+          <p class="job-desc">International ocean cruise vacancies across hospitality, marine, and logistics.</p>
+        </div>
+        <div class="job-actions">
+          <a class="btn btn-outline" href="https://www.msccruises.com/careers" target="_blank" rel="noopener">Visit Careers</a>
+          <button class="btn btn-primary" onclick="promptCvRequest('MSC Cruises')">Request CV</button>
         </div>
       </div>
 
@@ -349,14 +490,55 @@
             <div class="job-icon">🚢</div>
             <div>
               <div class="job-title">Carnival Cruise Line</div>
-              <div class="job-region">Shipboard & Maritime Jobs</div>
+              <div class="job-region">Shipboard Jobs</div>
             </div>
           </div>
-          <p class="job-desc">Hospitality, marine operations, entertainment, and culinary positions onboard.</p>
+          <p class="job-desc">Onboard positions in guest operations, maritime, medical, and entertainment.</p>
         </div>
         <div class="job-actions">
           <a class="btn btn-outline" href="https://jobs.carnival.com" target="_blank" rel="noopener">Visit Careers</a>
-          <button class="btn btn-primary" onclick="promptCvRequest('Carnival Cruise Ship')">Request CV</button>
+          <button class="btn btn-primary" onclick="promptCvRequest('Carnival Cruise')">Request CV</button>
+        </div>
+      </div>
+
+      <div class="job-card">
+        <div>
+          <div class="job-header">
+            <div class="job-icon">🌊</div>
+            <div>
+              <div class="job-title">All Cruise Lines Portal</div>
+              <div class="job-region">Royal Caribbean, NCL & Celebrity</div>
+            </div>
+          </div>
+          <p class="job-desc">Central hub for Royal Caribbean Group, Norwegian, and Celebrity Cruises.</p>
+        </div>
+        <div class="job-actions">
+          <a class="btn btn-outline" href="https://www.allcruisejobs.com" target="_blank" rel="noopener">Visit Careers</a>
+          <button class="btn btn-primary" onclick="promptCvRequest('Cruise Line All')">Request CV</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GLOBAL AVIATION & CORPORATE -->
+    <div class="section-title">
+      <h2>💼 Worldwide Corporate & Aviation Portals</h2>
+      <span style="font-size:13px; color:var(--text-muted);">Verified Links</span>
+    </div>
+    <div class="job-grid">
+      <div class="job-card">
+        <div>
+          <div class="job-header">
+            <div class="job-icon">✈️</div>
+            <div>
+              <div class="job-title">Qatar Airways Careers</div>
+              <div class="job-region">Global Aviation</div>
+            </div>
+          </div>
+          <p class="job-desc">Cabin crew, ground services, engineering, and corporate roles worldwide.</p>
+        </div>
+        <div class="job-actions">
+          <a class="btn btn-outline" href="https://careers.qatarairways.com" target="_blank" rel="noopener">Visit Careers</a>
+          <button class="btn btn-primary" onclick="promptCvRequest('Qatar Airways')">Request CV</button>
         </div>
       </div>
 
@@ -373,24 +555,7 @@
         </div>
         <div class="job-actions">
           <a class="btn btn-outline" href="https://www.usajobs.gov" target="_blank" rel="noopener">Visit Careers</a>
-          <button class="btn btn-primary" onclick="promptCvRequest('USA Available Jobs')">Request CV</button>
-        </div>
-      </div>
-
-      <div class="job-card">
-        <div>
-          <div class="job-header">
-            <div class="job-icon">💼</div>
-            <div>
-              <div class="job-title">LinkedIn Global Careers</div>
-              <div class="job-region">Worldwide Remote & Corporate</div>
-            </div>
-          </div>
-          <p class="job-desc">Worldwide professional listings, remote vacancies, and corporate placements.</p>
-        </div>
-        <div class="job-actions">
-          <a class="btn btn-outline" href="https://www.linkedin.com/jobs" target="_blank" rel="noopener">Visit Careers</a>
-          <button class="btn btn-primary" onclick="promptCvRequest('LinkedIn Global Jobs')">Request CV</button>
+          <button class="btn btn-primary" onclick="promptCvRequest('USA Jobs')">Request CV</button>
         </div>
       </div>
 
@@ -416,15 +581,15 @@
           <div class="job-header">
             <div class="job-icon">🌍</div>
             <div>
-              <div class="job-title">EMEA Career Portal</div>
-              <div class="job-region">Europe, Middle East & Africa</div>
+              <div class="job-title">EMEA & Europe Careers</div>
+              <div class="job-region">EURES & Middle East</div>
             </div>
           </div>
           <p class="job-desc">EURES European jobs and Middle East Gulf career opportunities.</p>
         </div>
         <div class="job-actions">
           <a class="btn btn-outline" href="https://eures.europa.eu" target="_blank" rel="noopener">Visit Careers</a>
-          <button class="btn btn-primary" onclick="promptCvRequest('EMEA Career Portal')">Request CV</button>
+          <button class="btn btn-primary" onclick="promptCvRequest('EMEA Europe Portal')">Request CV</button>
         </div>
       </div>
     </div>
@@ -441,7 +606,7 @@
         <form id="userUploadForm" onsubmit="handleUserSubmit(event)">
           <div class="form-group">
             <label>Target Job / Application:</label>
-            <input type="text" id="userTargetJob" placeholder="e.g., Qatar Airways Cabin Crew" required />
+            <input type="text" id="userTargetJob" placeholder="e.g., Qatar Airways Cabin Crew / Princess Cruises" required />
           </div>
 
           <div class="form-group">
@@ -449,7 +614,6 @@
             <textarea id="userNotes" rows="3" placeholder="Provide details regarding your work history or requirements..." required></textarea>
           </div>
 
-          <!-- Mandatory Payment Notice -->
           <div style="background: #fef3c7; border: 1px solid #f59e0b; padding: 12px; border-radius: 8px; margin-bottom: 14px;">
             <strong style="color: #92400e; font-size: 14px; display: block; margin-bottom: 4px;">⚠️ Required Service Fee: 1,000 KSH</strong>
             <p style="font-size: 13px; color: #78350f; line-height: 1.4;">
@@ -486,9 +650,56 @@
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:2px solid var(--border); padding-bottom:12px;">
       <div>
         <h2 style="font-size:22px; color:var(--text);">Human CV Expert Management Dashboard</h2>
-        <p style="color:var(--text-muted); font-size:14px;">Review applicant submissions and reply directly with revised CV documents.</p>
+        <p style="color:var(--text-muted); font-size:14px;">Post new job links, showcase hired candidates, and reply to applicant requests.</p>
       </div>
       <span class="badge badge-expert" style="padding:8px 14px; font-size:12px; border-radius:20px;">🛡️ Secured Expert Mode</span>
+    </div>
+
+    <!-- EXPERT TOOLS: POST JOBS & POST SUCCESSFUL CANDIDATES -->
+    <div class="panel-grid" style="margin-bottom:25px;">
+      <!-- Post Job Link Form -->
+      <div style="background:#fff; border:1px solid var(--border); padding:18px; border-radius:10px;">
+        <h3 style="margin-bottom:10px; font-size:16px;">➕ Post New Job Link to Website</h3>
+        <form onsubmit="handlePostJob(event)">
+          <div class="form-group">
+            <label>Job Title</label>
+            <input type="text" id="postJobTitle" placeholder="e.g., US Military Aviation Tech / MSC Cruise Staff" required />
+          </div>
+          <div class="form-group">
+            <label>Category / Region</label>
+            <input type="text" id="postJobRegion" placeholder="e.g., Worldwide Military / Cruise Line" required />
+          </div>
+          <div class="form-group">
+            <label>Careers Link (URL)</label>
+            <input type="url" id="postJobUrl" placeholder="https://..." required />
+          </div>
+          <div class="form-group">
+            <label>Short Description</label>
+            <textarea id="postJobDesc" rows="2" placeholder="Brief job duties and qualifications..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-success" style="width:100%;">Publish Job Link</button>
+        </form>
+      </div>
+
+      <!-- Post Success Story Form -->
+      <div style="background:#fff; border:1px solid var(--border); padding:18px; border-radius:10px;">
+        <h3 style="margin-bottom:10px; font-size:16px;">🏆 Post Hired / Successful Candidate</h3>
+        <form onsubmit="handlePostSuccess(event)">
+          <div class="form-group">
+            <label>Candidate Name</label>
+            <input type="text" id="postCandName" placeholder="e.g., John D." required />
+          </div>
+          <div class="form-group">
+            <label>Secured Job Role & Company</label>
+            <input type="text" id="postCandRole" placeholder="e.g., Secured: Princess Cruises Culinary Staff" required />
+          </div>
+          <div class="form-group">
+            <label>Testimonial / Notes</label>
+            <textarea id="postCandNotes" rows="2" placeholder="Feedback or success quote..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">Publish Candidate Success</button>
+        </form>
+      </div>
     </div>
 
     <!-- Main Section: Received Requests -->
@@ -766,6 +977,91 @@
       document.getElementById('expertDashboard').style.display = 'block';
     }
 
+    // POST JOB FUNCTION (FOR EXPERT)
+    function handlePostJob(e) {
+      e.preventDefault();
+      const title = document.getElementById('postJobTitle').value;
+      const region = document.getElementById('postJobRegion').value;
+      const url = document.getElementById('postJobUrl').value;
+      const desc = document.getElementById('postJobDesc').value;
+
+      db.collection('posted_jobs').add({
+        title, region, url, desc,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        alert('Job link published successfully on the website!');
+        e.target.reset();
+      }).catch(err => alert('Error publishing job: ' + err.message));
+    }
+
+    // POST SUCCESSFUL CANDIDATE FUNCTION (FOR EXPERT)
+    function handlePostSuccess(e) {
+      e.preventDefault();
+      const name = document.getElementById('postCandName').value;
+      const role = document.getElementById('postCandRole').value;
+      const notes = document.getElementById('postCandNotes').value;
+
+      db.collection('success_candidates').add({
+        name, role, notes,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        alert('Candidate success published successfully!');
+        e.target.reset();
+      }).catch(err => alert('Error publishing success story: ' + err.message));
+    }
+
+    // LISTEN & DISPLAY DYNAMIC JOBS
+    function listenDynamicJobs() {
+      const container = document.getElementById('dynamicJobGrid');
+      db.collection('posted_jobs').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
+        container.innerHTML = '';
+        if (snapshot.empty) {
+          container.innerHTML = '<p style="font-size:13px; color:var(--text-muted);">No custom expert job postings yet.</p>';
+          return;
+        }
+        snapshot.forEach(docSnap => {
+          const job = docSnap.data();
+          const card = document.createElement('div');
+          card.className = 'job-card';
+          card.innerHTML = `
+            <div>
+              <div class="job-header">
+                <div class="job-icon">📢</div>
+                <div>
+                  <div class="job-title">${job.title}</div>
+                  <div class="job-region">${job.region}</div>
+                </div>
+              </div>
+              <p class="job-desc">${job.desc}</p>
+            </div>
+            <div class="job-actions">
+              <a class="btn btn-outline" href="${job.url}" target="_blank" rel="noopener">Visit Careers</a>
+              <button class="btn btn-primary" onclick="promptCvRequest('${job.title.replace(/'/g, "\\'")}')">Request CV</button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      });
+    }
+
+    // LISTEN & DISPLAY SUCCESSFUL CANDIDATES
+    function listenSuccessCandidates() {
+      const container = document.getElementById('publicSuccessGrid');
+      db.collection('success_candidates').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
+        snapshot.forEach(docSnap => {
+          const cand = docSnap.data();
+          const card = document.createElement('div');
+          card.className = 'success-card';
+          card.innerHTML = `
+            <div class="success-name">🌟 ${cand.name}</div>
+            <div class="success-role">${cand.role}</div>
+            <div class="success-details">"${cand.notes}"</div>
+          `;
+          container.prepend(card);
+        });
+      });
+    }
+
     function handleUserSubmit(e) {
       e.preventDefault();
       const session = getSession();
@@ -806,7 +1102,6 @@
       reader.readAsDataURL(file);
     }
 
-    // Opens the dedicated reply modal pre-filled with the user's details
     function openReplyModal(email, name, jobTitle) {
       document.getElementById('expertReplyUserEmail').value = email;
       document.getElementById('expertReplyUserDisplay').value = `${name} (${email})`;
@@ -816,7 +1111,6 @@
       document.getElementById('expertReplyModal').style.display = 'flex';
     }
 
-    // Submits the reply document to Firestore
     function sendDocumentToUser(e) {
       e.preventDefault();
       const recipientEmail = document.getElementById('expertReplyUserEmail').value;
@@ -904,7 +1198,6 @@
         });
     }
 
-    // Listens to Firestore document updates and renders cards with direct action buttons
     function listenExpertDocs() {
       const container = document.getElementById('expertDocList');
 
@@ -965,6 +1258,9 @@
 
     function initApp() {
       const session = getSession();
+
+      listenDynamicJobs();
+      listenSuccessCandidates();
 
       if (!session) {
         document.getElementById('navPublicButtons').style.display = 'flex';
