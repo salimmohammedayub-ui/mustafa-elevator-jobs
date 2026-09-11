@@ -309,6 +309,134 @@
 
     .badge-user { background: #dbeafe; color: #1e40af; }
     .badge-expert { background: #fef3c7; color: #92400e; }
+
+    /* AI ASSISTANT WIDGET STYLES */
+    .ai-widget-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+      cursor: pointer;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s;
+    }
+
+    .ai-widget-button:hover {
+      transform: scale(1.05);
+      background: var(--primary-dark);
+    }
+
+    .ai-chat-box {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 350px;
+      max-width: 90vw;
+      height: 480px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      z-index: 1000;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .ai-chat-header {
+      background: var(--primary);
+      color: white;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .ai-chat-messages {
+      flex: 1;
+      padding: 12px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #f8fafc;
+      font-size: 13px;
+    }
+
+    .ai-msg {
+      padding: 8px 12px;
+      border-radius: 8px;
+      max-width: 85%;
+      line-height: 1.4;
+    }
+
+    .ai-msg-bot {
+      background: #e2e8f0;
+      color: var(--text);
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+    }
+
+    .ai-msg-user {
+      background: var(--primary);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+    }
+
+    .ai-quick-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      padding: 8px 12px;
+      background: white;
+      border-top: 1px solid var(--border);
+    }
+
+    .ai-quick-btn {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: var(--primary);
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .ai-quick-btn:hover {
+      background: #dbeafe;
+    }
+
+    .ai-chat-input {
+      display: flex;
+      border-top: 1px solid var(--border);
+      background: white;
+    }
+
+    .ai-chat-input input {
+      border: none;
+      padding: 10px;
+      border-radius: 0;
+      outline: none;
+    }
+
+    .ai-chat-input button {
+      border-radius: 0;
+      padding: 0 15px;
+    }
   </style>
 </head>
 <body>
@@ -811,6 +939,30 @@
     </div>
   </div>
 
+  <!-- FLOATING AI ASSISTANT WIDGET -->
+  <button class="ai-widget-button" onclick="toggleAiChat()">🤖 AI Assistant</button>
+
+  <div class="ai-chat-box" id="aiChatBox">
+    <div class="ai-chat-header">
+      <span>🤖 Mustafa Elevate AI Assistant</span>
+      <span onclick="toggleAiChat()" style="cursor:pointer; font-size:16px;">&times;</span>
+    </div>
+    <div class="ai-chat-messages" id="aiChatMessages">
+      <div class="ai-msg ai-msg-bot">
+        Hello! I am your Mustafa Elevate AI Assistant. How can I direct or assist you today?
+      </div>
+    </div>
+    <div class="ai-quick-options">
+      <button class="ai-quick-btn" onclick="askAiQuestion('How to request CV review?')">Request CV</button>
+      <button class="ai-quick-btn" onclick="askAiQuestion('M-Pesa payment info?')">Payment Info</button>
+      <button class="ai-quick-btn" onclick="askAiQuestion('How to login as Expert?')">Expert Login</button>
+    </div>
+    <form class="ai-chat-input" onsubmit="handleAiSubmit(event)">
+      <input type="text" id="aiInput" placeholder="Ask a question..." required />
+      <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+  </div>
+
   <script>
     // FIREBASE CONFIGURATION
     const firebaseConfig = {
@@ -1254,6 +1406,56 @@
           document.getElementById('bellCount').textContent = incomingCount;
           document.getElementById('submissionCounter').textContent = `${incomingCount} User Request(s)`;
         });
+    }
+
+    /* AI ASSISTANT LOGIC */
+    function toggleAiChat() {
+      const chatBox = document.getElementById('aiChatBox');
+      chatBox.style.display = chatBox.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function askAiQuestion(questionText) {
+      appendAiMessage(questionText, 'user');
+      processAiResponse(questionText);
+    }
+
+    function handleAiSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('aiInput');
+      const query = input.value.trim();
+      if (!query) return;
+
+      appendAiMessage(query, 'user');
+      input.value = '';
+      processAiResponse(query);
+    }
+
+    function appendAiMessage(msg, sender) {
+      const msgContainer = document.getElementById('aiChatMessages');
+      const div = document.createElement('div');
+      div.className = `ai-msg ${sender === 'user' ? 'ai-msg-user' : 'ai-msg-bot'}`;
+      div.textContent = msg;
+      msgContainer.appendChild(div);
+      msgContainer.scrollTop = msgContainer.scrollHeight;
+    }
+
+    function processAiResponse(query) {
+      const q = query.toLowerCase();
+      let response = "I'm here to direct you! You can click any 'Request CV' button next to jobs, log in to your account, or ask about M-Pesa payment details.";
+
+      if (q.includes('request') || q.includes('cv') || q.includes('resume') || q.includes('apply')) {
+        response = "To request CV assistance: Click 'Request CV' on any job card or log in as a User. Fill out the target job, attach your current resume, enter your M-Pesa payment reference code, and submit.";
+      } else if (q.includes('pay') || q.includes('mpesa') || q.includes('m-pesa') || q.includes('fee') || q.includes('cost')) {
+        response = "The CV Service Fee is 1,000 KSH. Paybill Number: 247247, Account Number: 0798698299. Put your M-Pesa code in the submission form.";
+      } else if (q.includes('login') || q.includes('expert') || q.includes('register') || q.includes('account')) {
+        response = "Click 'User Login / Register' at the top right to log into your account, or click 'Human CV Expert' if you are the staff administrator.";
+      } else if (q.includes('jobs') || q.includes('military') || q.includes('cruise') || q.includes('qatar')) {
+        response = "We feature links for US/UK/Canada Military, Princess & MSC Cruise lines, Qatar Airways, and USA/Canada job banks. Scroll down the dashboard to view them!";
+      }
+
+      setTimeout(() => {
+        appendAiMessage(response, 'bot');
+      }, 400);
     }
 
     function initApp() {
